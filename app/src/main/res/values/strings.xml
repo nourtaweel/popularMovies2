@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="action_settings">settings</string>
+    <string name="sort_by">sort by</string>
+    <string name="option_sort_by_popular">Popular</string>
+    <string name="option_sort_by_top_rated">Top Rated</string>
+    <string name="pref_sort_order">sort_order</string>
+    <string name="release_date">Release Date</string>
+    <string name="user_rating">User Rating</string>
+    <string name="genre">Genre</string>
+    <string name="plot_synopsis">Plot Synopsis</string>
+    <string name="poster_base_path">http://image.tmdb.org/t/p/w185/</string>
+    <string-array name="order_by">
+        <item>@string/option_sort_by_popular</item>
+        <item>@string/option_sort_by_top_rated</item>
+    </string-array>
+</resources>
