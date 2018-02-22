@@ -19,6 +19,9 @@ import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.utils.PreferencesUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -75,10 +78,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         // http://www.viralandroid.com/2016/03/how-to-add-spinner-dropdown-list-to-android-actionbar-toolbar.html
         MenuItem sortByItem = menu.findItem(R.id.action_sort);
         Spinner sortBySpinner = (Spinner) sortByItem.getActionView();
-        sortBySpinner.setBackgroundResource(android.R.drawable.ic_menu_sort_by_size);
+        //sortBySpinner.setBackgroundResource(android.R.drawable.ic_menu_sort_by_size);
         ArrayAdapter<CharSequence> sortSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.order_by,
-                R.layout.sort_order_spinner);
+                android.R.layout.simple_spinner_item);
+
         sortSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortBySpinner.setAdapter(sortSpinnerAdapter);
         //end
@@ -119,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     @Override
     public void onListItemClicked(Movie movie) {
-        Toast.makeText(this, movie.getTitle(),Toast.LENGTH_SHORT).show();
         Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
         detailsIntent.putExtra(EXTRA_MOVIE, movie);
         startActivity(detailsIntent);
