@@ -7,11 +7,14 @@
     <string name="pref_sort_order">sort_order</string>
     <string name="release_date">Release Date</string>
     <string name="user_rating">User Rating</string>
-    <string name="genre">Genre</string>
     <string name="plot_synopsis">Plot Synopsis</string>
     <string name="poster_base_path">http://image.tmdb.org/t/p/w185/</string>
     <string name="error_message">Oops! It looks that something went wrong when fetching data</string>
     <string name="refresh">Refresh</string>
+    <string name="movie_poster_image">movie poster image</string>
+    <string name="missing_movie_data">No movie data available</string>
+    <string name="intent_extra_movie">movie_extra</string>
+    <string name="retrofit_error">error retrofit</string>
     <string-array name="order_by">
         <item>@string/option_sort_by_popular</item>
         <item>@string/option_sort_by_top_rated</item>

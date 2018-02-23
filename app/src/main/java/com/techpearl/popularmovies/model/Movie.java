@@ -81,7 +81,7 @@ public class Movie implements Parcelable {
         this.posterPath = in.readString();
         this.originalLanguage = in.readString();
         this.originalTitle = in.readString();
-        this.genreIds = new ArrayList<Integer>();
+        this.genreIds = new ArrayList<>();
         in.readList(this.genreIds, (java.lang.Integer.class.getClassLoader()));
         this.backdropPath = in.readString();
         this.adult = in.readByte() != 0;
@@ -228,21 +228,19 @@ public class Movie implements Parcelable {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-                .append("voteCount: ").append(voteCount).append("\n")
-                .append("id: ").append(id).append("\n")
-                .append("video: ").append(video).append("\n")
-                .append("voteAverage: ").append(voteAverage).append("\n")
-                .append("title: ").append(title).append("\n")
-                .append("popularity: ").append(popularity).append("\n")
-                .append("posterPath: ").append(posterPath).append("\n")
-                .append("originalLanguage: ").append(originalLanguage).append("\n")
-                .append("originalTitle: ").append(originalTitle).append("\n")
-                .append("genreIds: ").append(genreIds).append("\n")
-                .append("backdropPath: ").append(backdropPath).append("\n")
-                .append("adult: ").append(adult).append("\n")
-                .append("overview: ").append(overview).append("\n")
-                .append("releaseDate: ").append(releaseDate)
-                .toString();
+        return "voteCount: " + voteCount + "\n" +
+                "id: " + id + "\n" +
+                "video: " + video + "\n" +
+                "voteAverage: " + voteAverage + "\n" +
+                "title: " + title + "\n" +
+                "popularity: " + popularity + "\n" +
+                "posterPath: " + posterPath + "\n" +
+                "originalLanguage: " + originalLanguage + "\n" +
+                "originalTitle: " + originalTitle + "\n" +
+                "genreIds: " + genreIds + "\n" +
+                "backdropPath: " + backdropPath + "\n" +
+                "adult: " + adult + "\n" +
+                "overview: " + overview + "\n" +
+                "releaseDate: " + releaseDate;
     }
 }

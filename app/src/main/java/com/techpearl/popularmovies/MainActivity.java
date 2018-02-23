@@ -1,6 +1,7 @@
 package com.techpearl.popularmovies;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techpearl.popularmovies.api.MoviesDbClient;
@@ -20,9 +20,6 @@ import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.utils.PreferencesUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,7 +27,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.ListItemClickListener{
-    public static final String EXTRA_MOVIE = "movie_extra";
     private static String TAG = MainActivity.class.getSimpleName();
     private final int SORT_ORDER_POPULAR = 0;
     private final int SORT_ORDER_TOP_RATED = 1;
@@ -62,14 +58,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         }
         call.enqueue(new Callback<List<Movie>>() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
+            public void onResponse(@NonNull Call<List<Movie>> call, @NonNull Response<List<Movie>> response) {
                 Log.d(TAG, response.body().toString());
                 showResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
-                Log.e(TAG, "error retrofit " + t.getMessage());
+            public void onFailure(@NonNull Call<List<Movie>> call, @NonNull Throwable t) {
+                Log.e(TAG, getString(R.string.retrofit_error) + t.getMessage());
                 showErrorMessage();
             }
         });
@@ -100,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         // http://www.viralandroid.com/2016/03/how-to-add-spinner-dropdown-list-to-android-actionbar-toolbar.html
         ArrayAdapter<CharSequence> sortSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.order_by,
-                android.R.layout.simple_spinner_item);
+                R.layout.spinner_layout);
         sortSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortBySpinner.setAdapter(sortSpinnerAdapter);
         //end
@@ -140,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     @Override
     public void onListItemClicked(Movie movie) {
         Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
-        detailsIntent.putExtra(EXTRA_MOVIE, movie);
+        detailsIntent.putExtra(getString(R.string.intent_extra_movie), movie);
         startActivity(detailsIntent);
     }
 

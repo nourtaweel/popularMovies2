@@ -1,7 +1,6 @@
 package com.techpearl.popularmovies.api;
 
 
-import com.google.gson.JsonObject;
 import com.techpearl.popularmovies.model.Movie;
 
 import java.util.List;

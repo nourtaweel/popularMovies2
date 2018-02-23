@@ -3,7 +3,6 @@ package com.techpearl.popularmovies;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,11 +26,11 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Intent startingIntent = getIntent();
-        if(!startingIntent.hasExtra(MainActivity.EXTRA_MOVIE)){
-            Toast.makeText(this, "No movie data available", Toast.LENGTH_SHORT).show();
+        if(!startingIntent.hasExtra(getString(R.string.intent_extra_movie))){
+            Toast.makeText(this, R.string.missing_movie_data, Toast.LENGTH_SHORT).show();
             finish();
         }
-        mMovie = startingIntent.getParcelableExtra(MainActivity.EXTRA_MOVIE);
+        mMovie = startingIntent.getParcelableExtra(getString(R.string.intent_extra_movie));
         mUserRatingTextView = (TextView) findViewById(R.id.userRatingTextView);
         mReleaseDateTextView = (TextView) findViewById(R.id.releaseDateTextView);
         mOverviewTextView = (TextView) findViewById(R.id.plotSynopsisTextView);
