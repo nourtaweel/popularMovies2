@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techpearl.popularmovies.api.MoviesDbClient;
@@ -35,12 +36,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     private final int SORT_ORDER_TOP_RATED = 1;
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
+    private View mErrorView;
     private int mSortOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mErrorView = findViewById(R.id.errorView);
         mRecyclerView = (RecyclerView) findViewById(R.id.moviesRecyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         mAdapter = new MoviesAdapter(null, this);
@@ -61,14 +64,26 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             @Override
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
                 Log.d(TAG, response.body().toString());
-                mAdapter.setMovies(response.body());
+                showResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<List<Movie>> call, Throwable t) {
                 Log.e(TAG, "error retrofit " + t.getMessage());
+                showErrorMessage();
             }
         });
+    }
+
+    private void showResponse(List<Movie> body) {
+        mErrorView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mAdapter.setMovies(body);
+    }
+
+    private void showErrorMessage() {
+        mErrorView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -127,5 +142,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
         detailsIntent.putExtra(EXTRA_MOVIE, movie);
         startActivity(detailsIntent);
+    }
+
+    public void refresh(View view) {
+        callApi();
     }
 }
