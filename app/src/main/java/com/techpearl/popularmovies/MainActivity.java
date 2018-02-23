@@ -74,15 +74,18 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        //this code is based on this tutorial
-        // http://www.viralandroid.com/2016/03/how-to-add-spinner-dropdown-list-to-android-actionbar-toolbar.html
         MenuItem sortByItem = menu.findItem(R.id.action_sort);
         Spinner sortBySpinner = (Spinner) sortByItem.getActionView();
-        //sortBySpinner.setBackgroundResource(android.R.drawable.ic_menu_sort_by_size);
+        setupSortBySpinner(sortBySpinner);
+        return true;
+    }
+
+    private void setupSortBySpinner(Spinner sortBySpinner) {
+        //this code is based on this tutorial
+        // http://www.viralandroid.com/2016/03/how-to-add-spinner-dropdown-list-to-android-actionbar-toolbar.html
         ArrayAdapter<CharSequence> sortSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.order_by,
                 android.R.layout.simple_spinner_item);
-
         sortSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortBySpinner.setAdapter(sortSpinnerAdapter);
         //end
@@ -95,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 if(selectedOption.equals(
                         getResources().getString(R.string.option_sort_by_popular))){
                     PreferencesUtils.setPreferredSortOrder(MainActivity.this, SORT_ORDER_POPULAR);
-
                 }else if(selectedOption.equals(
                         getResources().getString(R.string.option_sort_by_top_rated))){
                     PreferencesUtils.setPreferredSortOrder(MainActivity.this, SORT_ORDER_TOP_RATED);
@@ -105,11 +107,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
                 mSortOrder = SORT_ORDER_POPULAR;
             }
         });
-        return true;
+
     }
 
     @Override
