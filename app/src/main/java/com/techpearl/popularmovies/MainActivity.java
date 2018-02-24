@@ -1,6 +1,9 @@
 package com.techpearl.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techpearl.popularmovies.api.MoviesDbClient;
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
     private View mErrorView;
+    private TextView mErrorTextView;
     private int mSortOrder;
 
     @Override
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mErrorView = findViewById(R.id.errorView);
+        mErrorTextView = (TextView) findViewById(R.id.errorTextView);
         mRecyclerView = (RecyclerView) findViewById(R.id.moviesRecyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         mAdapter = new MoviesAdapter(null, this);
@@ -48,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     }
 
     private void callApi() {
+        if(!checkDeviceConnected()){
+            showErrorMessage(getString(R.string.error_message_no_network));
+            return;
+        }
         mSortOrder = PreferencesUtils.getPreferredSortOrder(this);
         MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
         Call<List<Movie>> call;
@@ -66,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             @Override
             public void onFailure(@NonNull Call<List<Movie>> call, @NonNull Throwable t) {
                 Log.e(TAG, getString(R.string.retrofit_error) + t.getMessage());
-                showErrorMessage();
+                showErrorMessage(getString(R.string.error_message));
             }
         });
     }
@@ -77,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         mAdapter.setMovies(body);
     }
 
-    private void showErrorMessage() {
+    private void showErrorMessage(String message) {
+        mErrorTextView.setText(message);
         mErrorView.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
@@ -142,5 +153,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     public void refresh(View view) {
         callApi();
+    }
+
+    private boolean checkDeviceConnected() {
+        /* Based on code snippet in
+         * https://developer.android.com/training/basics/network-ops/managing.html */
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }

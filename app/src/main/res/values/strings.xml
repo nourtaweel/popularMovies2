@@ -10,6 +10,8 @@
     <string name="plot_synopsis">Plot Synopsis</string>
     <string name="poster_base_path">http://image.tmdb.org/t/p/w185/</string>
     <string name="error_message">Oops! It looks that something went wrong when fetching data</string>
+    <string name="error_message_no_network">Oops! It looks that your device isn\'t connected to
+        the internet, connect and try again</string>
     <string name="refresh">Refresh</string>
     <string name="movie_poster_image">movie poster image</string>
     <string name="missing_movie_data">No movie data available</string>
