@@ -18,10 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceGenerator {
     public static final String API_KEY = BuildConfig.API_KEY;
     private static final String API_URL_BASE = "http://api.themoviedb.org/3/";
-    private static final String API_MOVIE_PATH = "movie";
-    private static final String API_POPULAR_PATH = "popular";
-    private static final String API_TOP_RATED_PATH = "top_rated";
-    private static final String API_KEY_PARAM = "api_key";
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder().build();
     private static Gson gson = new GsonBuilder()

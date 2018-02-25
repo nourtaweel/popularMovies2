@@ -20,7 +20,7 @@ public class Movie implements Parcelable {
     private Integer voteCount;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
     @SerializedName("video")
     @Expose
     private Boolean video;
@@ -73,7 +73,7 @@ public class Movie implements Parcelable {
 
     protected Movie(Parcel in) {
         this.voteCount = in.readInt();
-        this.id = in.readInt();
+        this.id = in.readString();
         this.video = in.readByte() != 0;
         this.voteAverage = in.readDouble();
         this.title = in.readString();
@@ -97,11 +97,11 @@ public class Movie implements Parcelable {
         this.voteCount = voteCount;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -207,7 +207,7 @@ public class Movie implements Parcelable {
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(voteCount);
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeByte((byte) (video ? 1 : 0));//based on this answer https://stackoverflow.com/questions/6201311/how-to-read-write-a-boolean-when-implementing-the-parcelable-interface
         dest.writeDouble(voteAverage);
         dest.writeString(title);
