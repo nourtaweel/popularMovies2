@@ -57,7 +57,7 @@ public class DetailsActivity extends AppCompatActivity {
         if(movieId == -1){
             return;
         }
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, true);
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
         Call<Movie> call = moviesDbClient.movieWithTrailersAndReviews(movieId,
                 ServiceGenerator.API_KEY,
                 "videos,reviews");

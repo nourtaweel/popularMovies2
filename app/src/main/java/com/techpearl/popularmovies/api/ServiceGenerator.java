@@ -24,30 +24,19 @@ public class ServiceGenerator {
     private static final String API_URL_BASE = "http://api.themoviedb.org/3/";
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder().build();
+
     private static Gson gson = new GsonBuilder()
-            .registerTypeAdapter(List.class, new MoviesDeserializer())
-            .create();
-    private static Gson gson1 = new GsonBuilder()
             .registerTypeAdapter(Movie.class, new MoviesDeserializer())
             .create();
 
     private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
             .baseUrl(API_URL_BASE)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(httpClient);
-    private static Retrofit retrofit = retrofitBuilder.build();
-
-    private static Retrofit.Builder retrofitBuilder1 = new Retrofit.Builder()
-            .baseUrl(API_URL_BASE)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient);
 
-    private static Retrofit retrofit1 = retrofitBuilder1.build();
+    private static Retrofit retrofit = retrofitBuilder.build();
 
-    public static <S> S createService(Class<S> serviceClass, boolean defaultGson) {
-        if(defaultGson){
-            return retrofit1.create(serviceClass);
-        }
-        return retrofit.create(serviceClass);
+    public static <S> S createService(Class<S> serviceClass) {
+            return retrofit.create(serviceClass);
     }
 }

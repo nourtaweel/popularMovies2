@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
+import com.techpearl.popularmovies.model.MovieList;
 import com.techpearl.popularmovies.utils.PreferencesUtils;
 
 import java.util.List;
@@ -59,22 +60,22 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             return;
         }
         mSortOrder = PreferencesUtils.getPreferredSortOrder(this);
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, false);
-        Call<List<Movie>> call;
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        Call<MovieList> call;
         if(mSortOrder == SORT_ORDER_POPULAR){
             call = moviesDbClient.popularMovies(ServiceGenerator.API_KEY);
         }else {
             call = moviesDbClient.topRatedMovies(ServiceGenerator.API_KEY);
         }
-        call.enqueue(new Callback<List<Movie>>() {
+        call.enqueue(new Callback<MovieList>() {
             @Override
-            public void onResponse(@NonNull Call<List<Movie>> call, @NonNull Response<List<Movie>> response) {
+            public void onResponse(@NonNull Call<MovieList> call, @NonNull Response<MovieList> response) {
                 Log.d(TAG, response.body().toString());
-                showResponse(response.body());
+                showResponse(response.body().getResults());
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Movie>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<MovieList> call, @NonNull Throwable t) {
                 Log.e(TAG, getString(R.string.retrofit_error) + t.getMessage());
                 showErrorMessage(getString(R.string.error_message));
             }

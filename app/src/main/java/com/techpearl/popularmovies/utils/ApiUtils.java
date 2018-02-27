@@ -10,8 +10,11 @@ import com.techpearl.popularmovies.R;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
+import com.techpearl.popularmovies.model.MovieList;
 import com.techpearl.popularmovies.model.Review;
+import com.techpearl.popularmovies.model.ReviewsList;
 import com.techpearl.popularmovies.model.Video;
+import com.techpearl.popularmovies.model.VideosList;
 
 import java.util.List;
 
@@ -27,10 +30,10 @@ public class ApiUtils {
     private final static int SORT_ORDER_POPULAR = 0;
     private final static int SORT_ORDER_TOP_RATED = 1;
     
-    public static void initLoadMovies(int sortOrder, Callback<List<Movie>> callback){
+    public static void initLoadMovies(int sortOrder, Callback<MovieList> callback){
         //TODO: check if connected
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, false);
-        Call<List<Movie>> call;
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        Call<MovieList> call;
         if(sortOrder == SORT_ORDER_POPULAR){
             call = moviesDbClient.popularMovies(ServiceGenerator.API_KEY);
         }else {
@@ -39,18 +42,18 @@ public class ApiUtils {
         call.enqueue(callback);
     } 
     
-    public static void initLoadMovieTrailers(int movieId, Callback<List<Video>> callback){
+    public static void initLoadMovieTrailers(int movieId, Callback<VideosList> callback){
         //TODO: check if connected
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, true);
-        Call<List<Video>> call = moviesDbClient.movieTrailers(movieId, ServiceGenerator.API_KEY);
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        Call<VideosList> call = moviesDbClient.movieTrailers(movieId, ServiceGenerator.API_KEY);
         call.enqueue(callback);
         
     }
     
-    public static void initLoadMovieReviews(int movieId, Callback<List<Review>> callback){
+    public static void initLoadMovieReviews(int movieId, Callback<ReviewsList> callback){
         //TODO: check if connected
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, true);
-        Call<List<Review>> call = moviesDbClient.movieReviews(movieId, ServiceGenerator.API_KEY);
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        Call<ReviewsList> call = moviesDbClient.movieReviews(movieId, ServiceGenerator.API_KEY);
         call.enqueue(callback);
     }
     

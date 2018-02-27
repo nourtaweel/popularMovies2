@@ -2,8 +2,11 @@ package com.techpearl.popularmovies.api;
 
 
 import com.techpearl.popularmovies.model.Movie;
+import com.techpearl.popularmovies.model.MovieList;
 import com.techpearl.popularmovies.model.Review;
+import com.techpearl.popularmovies.model.ReviewsList;
 import com.techpearl.popularmovies.model.Video;
+import com.techpearl.popularmovies.model.VideosList;
 
 import java.util.List;
 
@@ -25,16 +28,16 @@ public interface MoviesDbClient {
     static final String API_APPEND_TO = "append_to_response";
     static final String API_KEY_PARAM = "api_key";
     @GET(API_MOVIE_PATH + "/" + API_TOP_RATED_PATH)
-    Call<List<Movie>> topRatedMovies(@Query(API_KEY_PARAM) String apiKey);
+    Call<MovieList> topRatedMovies(@Query(API_KEY_PARAM) String apiKey);
 
     @GET(API_MOVIE_PATH + "/" + API_POPULAR_PATH)
-    Call<List<Movie>> popularMovies(@Query(API_KEY_PARAM) String apiKey);
+    Call<MovieList> popularMovies(@Query(API_KEY_PARAM) String apiKey);
 
     @GET(API_MOVIE_PATH + "/{id}/" + API_VIDEO_PATH)
-    Call<List<Video>> movieTrailers(@Path("id") int movieId, @Query(API_KEY_PARAM) String apiKey);
+    Call<VideosList> movieTrailers(@Path("id") int movieId, @Query(API_KEY_PARAM) String apiKey);
 
     @GET(API_MOVIE_PATH + "/{id}/" + API_REVIEWS_PATH)
-    Call<List<Review>> movieReviews(@Path("id") int movieId, @Query(API_KEY_PARAM) String apiKey);
+    Call<ReviewsList> movieReviews(@Path("id") int movieId, @Query(API_KEY_PARAM) String apiKey);
 
     @GET(API_MOVIE_PATH + "/{id}")
     Call<Movie> movieWithTrailersAndReviews(@Path("id") int movieId, @Query(API_KEY_PARAM) String apiKey,
