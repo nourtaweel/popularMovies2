@@ -29,7 +29,7 @@ public class ApiUtils {
     
     public static void initLoadMovies(int sortOrder, Callback<List<Movie>> callback){
         //TODO: check if connected
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, false);
         Call<List<Movie>> call;
         if(sortOrder == SORT_ORDER_POPULAR){
             call = moviesDbClient.popularMovies(ServiceGenerator.API_KEY);
@@ -41,7 +41,7 @@ public class ApiUtils {
     
     public static void initLoadMovieTrailers(int movieId, Callback<List<Video>> callback){
         //TODO: check if connected
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, true);
         Call<List<Video>> call = moviesDbClient.movieTrailers(movieId, ServiceGenerator.API_KEY);
         call.enqueue(callback);
         
@@ -49,7 +49,7 @@ public class ApiUtils {
     
     public static void initLoadMovieReviews(int movieId, Callback<List<Review>> callback){
         //TODO: check if connected
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, true);
         Call<List<Review>> call = moviesDbClient.movieReviews(movieId, ServiceGenerator.API_KEY);
         call.enqueue(callback);
     }

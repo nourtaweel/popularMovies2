@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             return;
         }
         mSortOrder = PreferencesUtils.getPreferredSortOrder(this);
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class, false);
         Call<List<Movie>> call;
         if(mSortOrder == SORT_ORDER_POPULAR){
             call = moviesDbClient.popularMovies(ServiceGenerator.API_KEY);
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     @Override
     public void onListItemClicked(Movie movie) {
         Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
-        detailsIntent.putExtra(getString(R.string.intent_extra_movie), movie);
+        detailsIntent.putExtra(getString(R.string.intent_extra_movie), movie.getId());
         startActivity(detailsIntent);
     }
 

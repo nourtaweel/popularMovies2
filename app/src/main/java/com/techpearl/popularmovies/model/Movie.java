@@ -57,6 +57,12 @@ public class Movie implements Parcelable {
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+    @SerializedName("videos")
+    @Expose
+    private VideosList videos = null;
+    @SerializedName("reviews")
+    @Expose
+    private ReviewsList reviews = null;
     public final static Parcelable.Creator<Movie> CREATOR = new Creator<Movie>() {
         @SuppressWarnings({"unchecked"})
         public Movie createFromParcel(Parcel in) {
@@ -87,6 +93,8 @@ public class Movie implements Parcelable {
         this.adult = in.readByte() != 0;
         this.overview = in.readString();
         this.releaseDate = in.readString();
+        this.videos = in.readParcelable(VideosList.class.getClassLoader());
+        this.reviews = in.readParcelable(ReviewsList.class.getClassLoader());
     }
 
     public Integer getVoteCount() {
@@ -201,6 +209,22 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
+    public VideosList getVideos() {
+        return videos;
+    }
+
+    public void setVideos(VideosList videos) {
+        this.videos = videos;
+    }
+
+    public ReviewsList getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ReviewsList reviews) {
+        this.reviews = reviews;
+    }
+
     public String getFullPosterPath(Context context){
         return context.getString(R.string.poster_base_path) + this.posterPath;
     }
@@ -220,6 +244,8 @@ public class Movie implements Parcelable {
         dest.writeByte((byte) (adult ? 1 : 0));
         dest.writeString(overview);
         dest.writeString(releaseDate);
+        dest.writeValue(videos);
+        dest.writeValue(reviews);
     }
 
     public int describeContents() {
@@ -241,6 +267,8 @@ public class Movie implements Parcelable {
                 "backdropPath: " + backdropPath + "\n" +
                 "adult: " + adult + "\n" +
                 "overview: " + overview + "\n" +
-                "releaseDate: " + releaseDate;
+                "releaseDate: " + releaseDate + "\n" +
+                "trailers: " + videos + "\n" +
+                "reviews: " + reviews;
     }
 }

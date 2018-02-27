@@ -2,8 +2,12 @@ package com.techpearl.popularmovies.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonWriter;
 import com.techpearl.popularmovies.BuildConfig;
+import com.techpearl.popularmovies.model.Movie;
 
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -23,13 +27,27 @@ public class ServiceGenerator {
     private static Gson gson = new GsonBuilder()
             .registerTypeAdapter(List.class, new MoviesDeserializer())
             .create();
+    private static Gson gson1 = new GsonBuilder()
+            .registerTypeAdapter(Movie.class, new MoviesDeserializer())
+            .create();
+
     private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
             .baseUrl(API_URL_BASE)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(httpClient);
     private static Retrofit retrofit = retrofitBuilder.build();
 
-    public static <S> S createService(Class<S> serviceClass) {
+    private static Retrofit.Builder retrofitBuilder1 = new Retrofit.Builder()
+            .baseUrl(API_URL_BASE)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient);
+
+    private static Retrofit retrofit1 = retrofitBuilder1.build();
+
+    public static <S> S createService(Class<S> serviceClass, boolean defaultGson) {
+        if(defaultGson){
+            return retrofit1.create(serviceClass);
+        }
         return retrofit.create(serviceClass);
     }
 }
