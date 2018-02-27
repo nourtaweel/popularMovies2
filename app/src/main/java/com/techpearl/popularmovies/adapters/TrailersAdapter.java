@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.techpearl.popularmovies.R;
 import com.techpearl.popularmovies.model.Video;
+import com.techpearl.popularmovies.utils.YoutubeUtils;
 
 import java.util.List;
 
@@ -19,9 +20,11 @@ import java.util.List;
 
 public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHolder> {
     private List<Video> videos;
+    private TrailerClickListener mListener;
     
-    public TrailersAdapter(List<Video> videos){
+    public TrailersAdapter(List<Video> videos, TrailerClickListener listener){
         this.videos = videos;
+        this.mListener = listener;
     }
     
     public void setVideos(List<Video> videos){
@@ -51,7 +54,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
         return videos.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView mTrailerImage;
         private Context mContext;
 
@@ -59,15 +62,24 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
             super(itemView);
             mTrailerImage = (ImageView) itemView.findViewById(R.id.trailerImageView);
             mContext = itemView.getContext();
+            itemView.setOnClickListener(this);
         }
         private void bind(String trailerKey){
             Picasso.with(mContext)
-                    .load(constructYoutubeImagePath(trailerKey, mContext))
+                    .load(YoutubeUtils.constructYoutubeImagePath(trailerKey, mContext))
                     .into(mTrailerImage);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            mListener.onTrailerClicked(videos.get(position).getKey());
         }
     }
 
-    private String constructYoutubeImagePath(String key, Context context) {
-        return context.getString(R.string.youtube_format, key);
+    public interface TrailerClickListener{
+        public void onTrailerClicked(String trailerKey);
     }
+
+
 }

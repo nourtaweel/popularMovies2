@@ -17,12 +17,13 @@ import com.techpearl.popularmovies.adapters.TrailersAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
+import com.techpearl.popularmovies.utils.YoutubeUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements TrailersAdapter.TrailerClickListener {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private Movie mMovie;
     private TextView mUserRatingTextView;
@@ -87,7 +88,7 @@ public class DetailsActivity extends AppCompatActivity {
         mUserRatingTextView.setText(userRating + "%");
         mReleaseDateTextView.setText(mMovie.getReleaseDate());
         mOverviewTextView.setText(mMovie.getOverview());
-        TrailersAdapter adapter = new TrailersAdapter(mMovie.getVideos().getResults());
+        TrailersAdapter adapter = new TrailersAdapter(mMovie.getVideos().getResults(), this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),
                 RecyclerView.HORIZONTAL,
                 false);
@@ -96,4 +97,8 @@ public class DetailsActivity extends AppCompatActivity {
         mTrailersRecyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onTrailerClicked(String trailerKey) {
+        YoutubeUtils.launchYoutube(this, trailerKey);
+    }
 }

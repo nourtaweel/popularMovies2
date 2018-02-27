@@ -18,6 +18,8 @@
     <string name="intent_extra_movie">movie_extra</string>
     <string name="retrofit_error">error retrofit</string>
     <string name="youtube_format">https://i.ytimg.com/vi/%1s/hqdefault.jpg</string>
+    <string name="youtube_intent_scheme">vnd.youtube:</string>
+    <string name="youtube_watch_link">http://www.youtube.com/watch?v=</string>
     <string-array name="order_by">
         <item>@string/option_sort_by_popular</item>
         <item>@string/option_sort_by_top_rated</item>
