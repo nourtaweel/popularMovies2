@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techpearl.popularmovies.adapters.MoviesAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,11 +15,6 @@ import com.squareup.picasso.Picasso;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
-import com.techpearl.popularmovies.model.Review;
-import com.techpearl.popularmovies.model.Video;
-import com.techpearl.popularmovies.utils.ApiUtils;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +28,8 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView mOverviewTextView;
     private ImageView mPosterImageView;
     private ProgressBar mRatingBar;
+    private RecyclerView mTrailersRecyclerView;
+    private RecyclerView mReviewsRecyclerView;
 
 
     @Override
@@ -45,12 +43,13 @@ public class DetailsActivity extends AppCompatActivity {
         }
         int movieId = startingIntent.getIntExtra(getString(R.string.intent_extra_movie), -1);
         fetchMovie(movieId);
-        //mMovie = startingIntent.getParcelableExtra(getString(R.string.intent_extra_movie));
         mUserRatingTextView = (TextView) findViewById(R.id.userRatingTextView);
         mReleaseDateTextView = (TextView) findViewById(R.id.releaseDateTextView);
         mOverviewTextView = (TextView) findViewById(R.id.plotSynopsisTextView);
         mPosterImageView = (ImageView) findViewById(R.id.imageView);
         mRatingBar = (ProgressBar) findViewById(R.id.progressBar);
+        mTrailersRecyclerView = (RecyclerView) findViewById(R.id.trailersRecyclerView);
+        mReviewsRecyclerView = (RecyclerView) findViewById(R.id.reviewsRecyclerView);
     }
 
     private void fetchMovie(int movieId) {

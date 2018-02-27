@@ -1,4 +1,4 @@
-package com.techpearl.popularmovies;
+package com.techpearl.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.techpearl.popularmovies.R;
 import com.techpearl.popularmovies.model.Movie;
 
 import java.util.List;
