@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.techpearl.popularmovies.adapters.TrailersAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
@@ -85,6 +87,13 @@ public class DetailsActivity extends AppCompatActivity {
         mUserRatingTextView.setText(userRating + "%");
         mReleaseDateTextView.setText(mMovie.getReleaseDate());
         mOverviewTextView.setText(mMovie.getOverview());
+        TrailersAdapter adapter = new TrailersAdapter(mMovie.getVideos().getResults());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),
+                RecyclerView.HORIZONTAL,
+                false);
+        mTrailersRecyclerView.setLayoutManager(layoutManager);
+        mTrailersRecyclerView.setHasFixedSize(true);
+        mTrailersRecyclerView.setAdapter(adapter);
     }
 
 }
