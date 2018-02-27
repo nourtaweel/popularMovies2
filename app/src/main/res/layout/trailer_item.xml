@@ -16,7 +16,7 @@
          />
 
     <ImageView
-        android:id="@+id/playImageView"
+        android:id="@+id/youtubeImageView"
         android:layout_width="46dp"
         android:layout_height="46dp"
         android:layout_marginBottom="8dp"
@@ -27,5 +27,6 @@
         app:layout_constraintEnd_toEndOf="@+id/trailerImageView"
         app:layout_constraintStart_toStartOf="@+id/trailerImageView"
         app:layout_constraintTop_toTopOf="@+id/trailerImageView"
-        app:srcCompat="@drawable/ic_play" />
+        app:srcCompat="@drawable/ic_youtube"
+        android:visibility="gone"/>
 </android.support.constraint.ConstraintLayout>

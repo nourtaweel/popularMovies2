@@ -56,18 +56,22 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView mTrailerImage;
+        private ImageView mYoutubeIcon;
         private Context mContext;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mTrailerImage = (ImageView) itemView.findViewById(R.id.trailerImageView);
+            mYoutubeIcon =(ImageView) itemView.findViewById(R.id.youtubeImageView);
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
         }
         private void bind(String trailerKey){
             Picasso.with(mContext)
                     .load(YoutubeUtils.constructYoutubeImagePath(trailerKey, mContext))
+                    .placeholder(R.drawable.ic_youtube)
                     .into(mTrailerImage);
+            mYoutubeIcon.setVisibility(View.VISIBLE);
         }
 
         @Override

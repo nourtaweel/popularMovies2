@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.techpearl.popularmovies.adapters.ReviewsAdapter;
 import com.techpearl.popularmovies.adapters.TrailersAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
@@ -88,13 +89,25 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         mUserRatingTextView.setText(userRating + "%");
         mReleaseDateTextView.setText(mMovie.getReleaseDate());
         mOverviewTextView.setText(mMovie.getOverview());
-        TrailersAdapter adapter = new TrailersAdapter(mMovie.getVideos().getResults(), this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),
+        //trailers
+        TrailersAdapter trailersAdapter = new TrailersAdapter(mMovie.getVideos().getResults(), this);
+        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(
+                getApplicationContext(),
                 RecyclerView.HORIZONTAL,
                 false);
-        mTrailersRecyclerView.setLayoutManager(layoutManager);
+        mTrailersRecyclerView.setLayoutManager(horizontalLayoutManager);
         mTrailersRecyclerView.setHasFixedSize(true);
-        mTrailersRecyclerView.setAdapter(adapter);
+        mTrailersRecyclerView.setAdapter(trailersAdapter);
+        //reviews
+        ReviewsAdapter reviewsAdapter = new ReviewsAdapter(mMovie.getReviews().getResults());
+        RecyclerView.LayoutManager verticalLayoutManager = new LinearLayoutManager(
+                getApplicationContext(),
+                RecyclerView.VERTICAL,
+                false);
+        mReviewsRecyclerView.setHasFixedSize(true);
+        mReviewsRecyclerView.setLayoutManager(verticalLayoutManager);
+        mReviewsRecyclerView.setAdapter(reviewsAdapter);
+        mReviewsRecyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override
