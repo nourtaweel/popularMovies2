@@ -12,72 +12,65 @@
         android:layout_height="wrap_content"
         >
 
+        <ImageView
+            android:id="@+id/backdropImageView"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/interstellar_backdrop"
+            android:background="@color/colorPrimaryDark"
+            android:alpha="0.3"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="185dp"
-            android:layout_height="300dp"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="@string/movie_poster_image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@mipmap/interstellar"
-            android:contentDescription="@string/movie_poster_image" />
+            app:layout_constraintTop_toBottomOf="@+id/backdropImageView"
+            tools:srcCompat="@mipmap/interstellar" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:progress="85"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/custom_drawable"
+            app:layout_constraintBottom_toBottomOf="@+id/backdropImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/userRatingLabel" />
-
-        <TextView
-            android:id="@+id/userRatingLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/user_rating"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="8dp" />
+            tools:progress="85" />
 
         <TextView
             android:id="@+id/userRatingTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            tools:text="85%"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/progressBar"
-            app:layout_constraintEnd_toEndOf="@+id/progressBar" />
-
-        <TextView
-            android:id="@+id/releaseDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/release_date"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintStart_toStartOf="@+id/userRatingLabel"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            app:layout_constraintTop_toTopOf="@+id/progressBar"
+            tools:text="85%" />
 
         <TextView
             android:id="@+id/releaseDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            tools:text="07-09-2014"
-            app:layout_constraintStart_toStartOf="@+id/releaseDateLabel"
-            app:layout_constraintTop_toBottomOf="@+id/releaseDateLabel" />
+            app:layout_constraintStart_toStartOf="@+id/titleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:text="07-09-2014" />
 
         <TextView
             android:id="@+id/plotSynopsisLabel"
@@ -113,13 +106,41 @@
             app:layout_constraintTop_toBottomOf="@id/plotSynopsisTextView"
             android:orientation="horizontal"
             />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/reviewsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="88dp"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trailersRecyclerView"/>
+            app:layout_constraintTop_toBottomOf="@id/trailersRecyclerView" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/backdropImageView"
+            tools:text="Interstellar" />
+
+        <ImageButton
+            android:id="@+id/favImageButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/fav_icon_selector"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
     </android.support.constraint.ConstraintLayout>

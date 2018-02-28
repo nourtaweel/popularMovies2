@@ -228,6 +228,9 @@ public class Movie implements Parcelable {
     public String getFullPosterPath(Context context){
         return context.getString(R.string.poster_base_path) + this.posterPath;
     }
+    public String getFullBackdropPath(Context context){
+        return context.getString(R.string.backdrop_base_path) + this.backdropPath;
+    }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(voteCount);

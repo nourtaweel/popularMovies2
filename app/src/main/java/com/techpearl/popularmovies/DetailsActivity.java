@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,16 +26,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailsActivity extends AppCompatActivity implements TrailersAdapter.TrailerClickListener {
+public class DetailsActivity extends AppCompatActivity implements TrailersAdapter.TrailerClickListener, View.OnClickListener {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private Movie mMovie;
+    private TextView mTitleTextView;
     private TextView mUserRatingTextView;
     private TextView mReleaseDateTextView;
     private TextView mOverviewTextView;
+    private ImageView mBackdropImageView;
     private ImageView mPosterImageView;
     private ProgressBar mRatingBar;
     private RecyclerView mTrailersRecyclerView;
     private RecyclerView mReviewsRecyclerView;
+    private ImageButton mFavoriteButton;
 
 
     @Override
@@ -48,12 +53,15 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         int movieId = startingIntent.getIntExtra(getString(R.string.intent_extra_movie), -1);
         fetchMovie(movieId);
         mUserRatingTextView = (TextView) findViewById(R.id.userRatingTextView);
+        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
         mReleaseDateTextView = (TextView) findViewById(R.id.releaseDateTextView);
         mOverviewTextView = (TextView) findViewById(R.id.plotSynopsisTextView);
         mPosterImageView = (ImageView) findViewById(R.id.imageView);
+        mBackdropImageView = (ImageView) findViewById(R.id.backdropImageView);
         mRatingBar = (ProgressBar) findViewById(R.id.progressBar);
         mTrailersRecyclerView = (RecyclerView) findViewById(R.id.trailersRecyclerView);
         mReviewsRecyclerView = (RecyclerView) findViewById(R.id.reviewsRecyclerView);
+        mFavoriteButton = (ImageButton) findViewById(R.id.favImageButton);
     }
 
     private void fetchMovie(int movieId) {
@@ -83,12 +91,16 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         if(mMovie == null)
             return;
         setTitle(mMovie.getTitle());
+        mTitleTextView.setText(mMovie.getTitle());
         Picasso.with(this).load(mMovie.getFullPosterPath(this)).into(mPosterImageView);
+        Picasso.with(this).load(mMovie.getFullBackdropPath(this)).into(mBackdropImageView);
         int userRating = mMovie.getVoteAverage().intValue() * 10;
         mRatingBar.setProgress(userRating);
         mUserRatingTextView.setText(userRating + "%");
         mReleaseDateTextView.setText(mMovie.getReleaseDate());
         mOverviewTextView.setText(mMovie.getOverview());
+        //favorite icon
+        mFavoriteButton.setOnClickListener(this);
         //trailers
         TrailersAdapter trailersAdapter = new TrailersAdapter(mMovie.getVideos().getResults(), this);
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(
@@ -113,5 +125,12 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
     @Override
     public void onTrailerClicked(String trailerKey) {
         YoutubeUtils.launchYoutube(this, trailerKey);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==R.id.favImageButton){
+            mFavoriteButton.setSelected(!mFavoriteButton.isSelected());
+        }
     }
 }
