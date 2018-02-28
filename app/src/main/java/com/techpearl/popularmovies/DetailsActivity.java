@@ -30,6 +30,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private Movie mMovie;
     private TextView mTitleTextView;
+    private TextView mRuntimeTextView;
     private TextView mUserRatingTextView;
     private TextView mReleaseDateTextView;
     private TextView mOverviewTextView;
@@ -54,6 +55,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         fetchMovie(movieId);
         mUserRatingTextView = (TextView) findViewById(R.id.userRatingTextView);
         mTitleTextView = (TextView) findViewById(R.id.titleTextView);
+        mRuntimeTextView = (TextView) findViewById(R.id.runtimeTextView);
         mReleaseDateTextView = (TextView) findViewById(R.id.releaseDateTextView);
         mOverviewTextView = (TextView) findViewById(R.id.plotSynopsisTextView);
         mPosterImageView = (ImageView) findViewById(R.id.imageView);
@@ -97,7 +99,9 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         int userRating = mMovie.getVoteAverage().intValue() * 10;
         mRatingBar.setProgress(userRating);
         mUserRatingTextView.setText(userRating + "%");
-        mReleaseDateTextView.setText(mMovie.getReleaseDate());
+        mReleaseDateTextView.setText(mMovie.getReleaseDate().substring(0,4));
+        mRuntimeTextView.setText("\u23F2 " +
+                getString(R.string.runtime_format,mMovie.getRuntime()/60, mMovie.getRuntime()%60));
         mOverviewTextView.setText(mMovie.getOverview());
         //favorite icon
         mFavoriteButton.setOnClickListener(this);

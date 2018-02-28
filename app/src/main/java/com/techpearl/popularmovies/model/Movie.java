@@ -24,6 +24,9 @@ public class Movie implements Parcelable {
     @SerializedName("video")
     @Expose
     private Boolean video;
+    @SerializedName("runtime")
+    @Expose
+    private Integer runtime;
     @SerializedName("vote_average")
     @Expose
     private Double voteAverage;
@@ -82,6 +85,7 @@ public class Movie implements Parcelable {
         this.id = in.readInt();
         this.video = in.readByte() != 0;
         this.voteAverage = in.readDouble();
+        this.runtime = in.readInt();
         this.title = in.readString();
         this.popularity = in.readDouble();
         this.posterPath = in.readString();
@@ -135,6 +139,14 @@ public class Movie implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
     }
 
     public Double getPopularity() {
@@ -237,6 +249,7 @@ public class Movie implements Parcelable {
         dest.writeInt(id);
         dest.writeByte((byte) (video ? 1 : 0));//based on this answer https://stackoverflow.com/questions/6201311/how-to-read-write-a-boolean-when-implementing-the-parcelable-interface
         dest.writeDouble(voteAverage);
+        dest.writeInt(runtime);
         dest.writeString(title);
         dest.writeDouble(popularity);
         dest.writeString(posterPath);
@@ -261,6 +274,7 @@ public class Movie implements Parcelable {
                 "id: " + id + "\n" +
                 "video: " + video + "\n" +
                 "voteAverage: " + voteAverage + "\n" +
+                "runtime: " + runtime + "\n" +
                 "title: " + title + "\n" +
                 "popularity: " + popularity + "\n" +
                 "posterPath: " + posterPath + "\n" +

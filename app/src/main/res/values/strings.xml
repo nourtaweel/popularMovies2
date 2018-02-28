@@ -8,6 +8,7 @@
     <string name="release_date">Release Date</string>
     <string name="user_rating">User Rating</string>
     <string name="plot_synopsis">Plot Synopsis</string>
+    <string name="runtime_format">%d:%02d</string>
     <string name="poster_base_path">http://image.tmdb.org/t/p/w185/</string>
     <string name="backdrop_base_path">http://image.tmdb.org/t/p/w780/</string>
     <string name="error_message">Oops! It looks that something went wrong when fetching data</string>
