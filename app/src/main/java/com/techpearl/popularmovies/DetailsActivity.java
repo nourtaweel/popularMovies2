@@ -1,5 +1,6 @@
 package com.techpearl.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.techpearl.popularmovies.adapters.ReviewsAdapter;
 import com.techpearl.popularmovies.adapters.TrailersAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
+import com.techpearl.popularmovies.data.MoviesContract;
 import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.utils.YoutubeUtils;
 
@@ -135,6 +137,10 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
     public void onClick(View view) {
         if(view.getId()==R.id.favImageButton){
             mFavoriteButton.setSelected(!mFavoriteButton.isSelected());
+            ContentValues values = new ContentValues();
+            values.put(MoviesContract.MovieEntry.COLUMN_MOVIE_API_ID, mMovie.getId());
+            values.put(MoviesContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
+            getContentResolver().insert(MoviesContract.MovieEntry.CONTENT_URI, values);
         }
     }
 }
