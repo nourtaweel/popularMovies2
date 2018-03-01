@@ -151,7 +151,6 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
                 }
             }else{
                 try{
-                    Log.d(TAG, "try delete");
                     DataUtils.deleteFavorite(mMovie, getApplicationContext());
                     mIsFavorite = false;
                 }catch (Exception e){
@@ -159,10 +158,6 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
                 }
             }
             mFavoriteButton.setSelected(mIsFavorite);
-            /*ContentValues values = new ContentValues();
-            values.put(MoviesContract.MovieEntry.COLUMN_MOVIE_API_ID, mMovie.getId());
-            values.put(MoviesContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
-            getContentResolver().insert(MoviesContract.MovieEntry.CONTENT_URI, values);*/
 
 
         }
