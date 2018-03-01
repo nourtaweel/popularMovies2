@@ -24,6 +24,7 @@ public class MoviesContract {
         public static final String COLUMN_MOVIE_API_ID = "movie_api_id";
         public static final String COLUMN_RUNTIME = "runtime";
         public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_USER_RATING = "rating";
         public static final String COLUMN_POSTER = "poster";
         public static final String COLUMN_BACKDROP = "backdrop";
         public static final String COLUMN_OVERVIEW = "overview";

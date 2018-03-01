@@ -22,6 +22,7 @@ import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.data.MoviesContract;
 import com.techpearl.popularmovies.model.Movie;
+import com.techpearl.popularmovies.utils.DataUtils;
 import com.techpearl.popularmovies.utils.YoutubeUtils;
 
 import retrofit2.Call;
@@ -31,6 +32,7 @@ import retrofit2.Response;
 public class DetailsActivity extends AppCompatActivity implements TrailersAdapter.TrailerClickListener, View.OnClickListener {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private Movie mMovie;
+    private boolean mIsFavorite;
     private TextView mTitleTextView;
     private TextView mRuntimeTextView;
     private TextView mUserRatingTextView;
@@ -106,6 +108,10 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
                 getString(R.string.runtime_format,mMovie.getRuntime()/60, mMovie.getRuntime()%60));
         mOverviewTextView.setText(mMovie.getOverview());
         //favorite icon
+        mIsFavorite = DataUtils.isFavorite(mMovie.getId(), this);
+        Log.d(TAG, "is Fav: " + mIsFavorite);
+        //TODO move off the main thread
+        mFavoriteButton.setSelected(mIsFavorite);
         mFavoriteButton.setOnClickListener(this);
         //trailers
         TrailersAdapter trailersAdapter = new TrailersAdapter(mMovie.getVideos().getResults(), this);
@@ -136,11 +142,29 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.favImageButton){
-            mFavoriteButton.setSelected(!mFavoriteButton.isSelected());
-            ContentValues values = new ContentValues();
+            if(!mIsFavorite){
+                try{
+                    DataUtils.saveFavoriteMovie(mMovie, getApplicationContext());
+                    mIsFavorite = true;
+                }catch (Exception e){
+                    Log.e(TAG, e.getLocalizedMessage());
+                }
+            }else{
+                try{
+                    Log.d(TAG, "try delete");
+                    DataUtils.deleteFavorite(mMovie, getApplicationContext());
+                    mIsFavorite = false;
+                }catch (Exception e){
+                    Log.e(TAG, e.getLocalizedMessage());
+                }
+            }
+            mFavoriteButton.setSelected(mIsFavorite);
+            /*ContentValues values = new ContentValues();
             values.put(MoviesContract.MovieEntry.COLUMN_MOVIE_API_ID, mMovie.getId());
             values.put(MoviesContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
-            getContentResolver().insert(MoviesContract.MovieEntry.CONTENT_URI, values);
+            getContentResolver().insert(MoviesContract.MovieEntry.CONTENT_URI, values);*/
+
+
         }
     }
 }

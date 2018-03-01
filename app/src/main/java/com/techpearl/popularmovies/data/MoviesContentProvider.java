@@ -160,7 +160,7 @@ public class MoviesContentProvider extends ContentProvider {
             case MOVIES_WITH_ID:
                 id = uri.getPathSegments().get(1);
                 numDeleted = db.delete(MoviesContract.MovieEntry.TABLE_NAME,
-                        MoviesContract.MovieEntry._ID + "=?", new String[] {id});
+                        MoviesContract.MovieEntry.COLUMN_MOVIE_API_ID + "=?", new String[] {id});
                 break;
             case TRAILERS_FOR_MOVIE:
                 id = uri.getPathSegments().get(1);
@@ -169,7 +169,7 @@ public class MoviesContentProvider extends ContentProvider {
                 break;
             case REVIEWS_FOR_MOVIE:
                 id = uri.getPathSegments().get(1);
-                numDeleted = db.delete(MoviesContract.TrailerEntry.TABLE_NAME,
+                numDeleted = db.delete(MoviesContract.ReviewEntry.TABLE_NAME,
                         MoviesContract.ReviewEntry.COLUMN_MOVIE_ID + "=?", new String[] {id});
                 break;
             default:
