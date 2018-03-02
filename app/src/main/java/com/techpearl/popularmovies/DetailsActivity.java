@@ -1,6 +1,5 @@
 package com.techpearl.popularmovies;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +24,8 @@ import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.utils.DataUtils;
 import com.techpearl.popularmovies.utils.YoutubeUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,23 +34,24 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private Movie mMovie;
     private boolean mIsFavorite;
-    private TextView mTitleTextView;
-    private TextView mRuntimeTextView;
-    private TextView mUserRatingTextView;
-    private TextView mReleaseDateTextView;
-    private TextView mOverviewTextView;
-    private ImageView mBackdropImageView;
-    private ImageView mPosterImageView;
-    private ProgressBar mRatingBar;
-    private RecyclerView mTrailersRecyclerView;
-    private RecyclerView mReviewsRecyclerView;
-    private ImageButton mFavoriteButton;
+    @BindView(R.id.titleTextView) TextView mTitleTextView;
+    @BindView(R.id.runtimeTextView) TextView mRuntimeTextView;
+    @BindView(R.id.userRatingTextView) TextView mUserRatingTextView;
+    @BindView(R.id.releaseDateTextView) TextView mReleaseDateTextView;
+    @BindView(R.id.plotSynopsisTextView) TextView mOverviewTextView;
+    @BindView(R.id.backdropImageView) ImageView mBackdropImageView;
+    @BindView(R.id.imageView) ImageView mPosterImageView;
+    @BindView(R.id.progressBar) ProgressBar mRatingBar;
+    @BindView(R.id.trailersRecyclerView) RecyclerView mTrailersRecyclerView;
+    @BindView(R.id.reviewsRecyclerView) RecyclerView mReviewsRecyclerView;
+    @BindView(R.id.favImageButton) ImageButton mFavoriteButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        ButterKnife.bind(this);
         Intent startingIntent = getIntent();
         if(!startingIntent.hasExtra(getString(R.string.intent_extra_movie))){
             Toast.makeText(this, R.string.missing_movie_data, Toast.LENGTH_SHORT).show();
@@ -57,17 +59,6 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         }
         int movieId = startingIntent.getIntExtra(getString(R.string.intent_extra_movie), -1);
         fetchMovie(movieId);
-        mUserRatingTextView = (TextView) findViewById(R.id.userRatingTextView);
-        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
-        mRuntimeTextView = (TextView) findViewById(R.id.runtimeTextView);
-        mReleaseDateTextView = (TextView) findViewById(R.id.releaseDateTextView);
-        mOverviewTextView = (TextView) findViewById(R.id.plotSynopsisTextView);
-        mPosterImageView = (ImageView) findViewById(R.id.imageView);
-        mBackdropImageView = (ImageView) findViewById(R.id.backdropImageView);
-        mRatingBar = (ProgressBar) findViewById(R.id.progressBar);
-        mTrailersRecyclerView = (RecyclerView) findViewById(R.id.trailersRecyclerView);
-        mReviewsRecyclerView = (RecyclerView) findViewById(R.id.reviewsRecyclerView);
-        mFavoriteButton = (ImageButton) findViewById(R.id.favImageButton);
     }
 
     private void fetchMovie(int movieId) {
@@ -81,7 +72,6 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> response) {
-                Log.d(TAG, response.body().toString());
                 mMovie = response.body();
                 populateUI();
             }
@@ -102,10 +92,11 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         Picasso.with(this).load(mMovie.getFullBackdropPath(this)).into(mBackdropImageView);
         Double userRating = (mMovie.getVoteAverage() * 10);
         mRatingBar.setProgress(userRating.intValue());
-        mUserRatingTextView.setText(mMovie.getVoteAverage() + "/10");
+        mUserRatingTextView.setText(getString(R.string.rating_of_ten_format, mMovie.getVoteAverage()));
         mReleaseDateTextView.setText(mMovie.getReleaseDate().substring(0,4));
-        mRuntimeTextView.setText("\u23F2 " +
-                getString(R.string.runtime_format,mMovie.getRuntime()/60, mMovie.getRuntime()%60));
+        mRuntimeTextView.setText(getString(R.string.runtime_format,
+                mMovie.getRuntime()/60,
+                mMovie.getRuntime()%60));
         mOverviewTextView.setText(mMovie.getOverview());
         //favorite icon
         mIsFavorite = DataUtils.isFavorite(mMovie.getId(), this);

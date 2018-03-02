@@ -14,6 +14,9 @@ import com.techpearl.popularmovies.utils.YoutubeUtils;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Nour on 2/27/2018.
  */
@@ -55,14 +58,13 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private ImageView mTrailerImage;
-        private ImageView mYoutubeIcon;
+        @BindView(R.id.trailerImageView) ImageView mTrailerImage;
+        @BindView(R.id.youtubeImageView) ImageView mYoutubeIcon;
         private Context mContext;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTrailerImage = (ImageView) itemView.findViewById(R.id.trailerImageView);
-            mYoutubeIcon =(ImageView) itemView.findViewById(R.id.youtubeImageView);
+            ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
         }

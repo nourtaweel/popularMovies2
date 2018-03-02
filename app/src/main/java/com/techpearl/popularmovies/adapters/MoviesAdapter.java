@@ -13,6 +13,9 @@ import com.techpearl.popularmovies.model.Movie;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Nour on 2/20/2018.
  */
@@ -52,12 +55,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private ImageView posterImageView;
+        @BindView(R.id.posterImageView) ImageView posterImageView;
         private Context context;
         public MovieViewHolder(View itemView) {
             super(itemView);
-            posterImageView = (ImageView) itemView.findViewById(R.id.posterImageView);
             context = itemView.getContext();
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
         private void bind(int listIndex){

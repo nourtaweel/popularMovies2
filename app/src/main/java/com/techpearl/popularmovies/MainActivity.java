@@ -12,11 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.techpearl.popularmovies.adapters.MoviesAdapter;
 import com.techpearl.popularmovies.fragments.FavoriteFragment;
 import com.techpearl.popularmovies.fragments.PopularFragment;
 import com.techpearl.popularmovies.fragments.TopRatedFragment;
-import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.utils.PreferencesUtils;
 
 public class MainActivity extends AppCompatActivity{

@@ -18,15 +18,20 @@ import com.techpearl.popularmovies.model.Movie;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by Nour on 3/2/2018.
  */
 
 abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.MovieClickListener {
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.moviesRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.errorView) View mErrorView;
+    @BindView(R.id.errorTextView) TextView mErrorTextView;
     private MoviesAdapter mAdapter;
-    private View mErrorView;
-    private TextView mErrorTextView;
+    private Unbinder unbinder;
 
     public BaseMoviesFragment() {
     }
@@ -35,14 +40,13 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_base, container, false);
+        View view = inflater.inflate(R.layout.fragment_base, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mErrorView = getView().findViewById(R.id.errorView);
-        mErrorTextView = (TextView)getView().findViewById(R.id.errorTextView);
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.moviesRecyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
         mAdapter = new MoviesAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
@@ -71,5 +75,11 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         Intent detailsIntent = new Intent(getActivity(), DetailsActivity.class);
         detailsIntent.putExtra(getString(R.string.intent_extra_movie), movie.getId());
         startActivity(detailsIntent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
