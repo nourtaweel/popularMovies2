@@ -32,7 +32,7 @@ import retrofit2.Response;
 /**
  * A fragment to display top rated movies
  */
-public class TopRatedFragment extends Fragment implements MoviesAdapter.MovieClickListener {
+public class TopRatedFragment extends BaseMoviesFragment {
     private static final String TAG = TopRatedFragment.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
@@ -44,26 +44,8 @@ public class TopRatedFragment extends Fragment implements MoviesAdapter.MovieCli
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-       return inflater.inflate(R.layout.fragment_top_rated, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mErrorView = getView().findViewById(R.id.errorView);
-        mErrorTextView = (TextView)getView().findViewById(R.id.errorTextView);
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.moviesRecyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
-        mAdapter = new MoviesAdapter(null, this);
-        mRecyclerView.setAdapter(mAdapter);
-        callApi();
-    }
-
-    private void callApi() {
+    void loadMovieList() {
         if(!ApiUtils.isConnected(getContext())){
             showErrorMessage(getString(R.string.error_message_no_network));
             return;
@@ -73,7 +55,6 @@ public class TopRatedFragment extends Fragment implements MoviesAdapter.MovieCli
         call.enqueue(new Callback<MovieList>() {
             @Override
             public void onResponse(@NonNull Call<MovieList> call, @NonNull Response<MovieList> response) {
-                Log.d(TAG, response.body().toString());
                 showResponse(response.body().getResults());
             }
 
@@ -83,26 +64,5 @@ public class TopRatedFragment extends Fragment implements MoviesAdapter.MovieCli
                 showErrorMessage(getString(R.string.error_message));
             }
         });
-    }
-
-    private void showResponse(List<Movie> body) {
-        mErrorView.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mAdapter.setMovies(body);
-    }
-
-    private void showErrorMessage(String message) {
-        mErrorTextView.setText(message);
-        mErrorView.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-    }
-    public void refresh(View view) {
-        callApi();
-    }
-    @Override
-    public void onMovieClicked(Movie movie) {
-        Intent detailsIntent = new Intent(getActivity(), DetailsActivity.class);
-        detailsIntent.putExtra(getString(R.string.intent_extra_movie), movie.getId());
-        startActivity(detailsIntent);
     }
 }
