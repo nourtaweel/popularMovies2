@@ -24,6 +24,7 @@ import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.model.MovieList;
+import com.techpearl.popularmovies.utils.DataUtils;
 import com.techpearl.popularmovies.utils.PreferencesUtils;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     private static String TAG = MainActivity.class.getSimpleName();
     private final int SORT_ORDER_POPULAR = 0;
     private final int SORT_ORDER_TOP_RATED = 1;
+    private final int SHOW_FAVORITE = 2;
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
     private View mErrorView;
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         mAdapter = new MoviesAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
-        callApi();
+        mSortOrder = PreferencesUtils.getPreferredSortOrder(this);
     }
 
     private void callApi() {
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             showErrorMessage(getString(R.string.error_message_no_network));
             return;
         }
-        mSortOrder = PreferencesUtils.getPreferredSortOrder(this);
         MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
         Call<MovieList> call;
         if(mSortOrder == SORT_ORDER_POPULAR){
@@ -119,14 +120,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String[] sortOptions = getResources().getStringArray(R.array.order_by);
                 String selectedOption = sortOptions[i];
-                if(selectedOption.equals(
-                        getResources().getString(R.string.option_sort_by_popular))){
+                if(selectedOption.equals(getString(R.string.option_sort_by_popular))){
                     PreferencesUtils.setPreferredSortOrder(MainActivity.this, SORT_ORDER_POPULAR);
-                }else if(selectedOption.equals(
-                        getResources().getString(R.string.option_sort_by_top_rated))){
+                    callApi();
+                }else if(selectedOption.equals(getString(R.string.option_sort_by_top_rated))){
                     PreferencesUtils.setPreferredSortOrder(MainActivity.this, SORT_ORDER_TOP_RATED);
+                    callApi();
+                }else if(selectedOption.equals(getString(R.string.option_show_favorite))){
+                    PreferencesUtils.setPreferredSortOrder(MainActivity.this, SHOW_FAVORITE);
+                    callContentProvider();
                 }
-                callApi();
+
             }
 
             @Override
@@ -137,8 +141,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     }
 
+    private void callContentProvider() {
+        List<Movie> faves = DataUtils.getFavorites(this);
+        showResponse(faves);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         return super.onOptionsItemSelected(item);
     }
 

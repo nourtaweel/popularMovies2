@@ -100,9 +100,9 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         mTitleTextView.setText(mMovie.getTitle());
         Picasso.with(this).load(mMovie.getFullPosterPath(this)).into(mPosterImageView);
         Picasso.with(this).load(mMovie.getFullBackdropPath(this)).into(mBackdropImageView);
-        int userRating = mMovie.getVoteAverage().intValue() * 10;
-        mRatingBar.setProgress(userRating);
-        mUserRatingTextView.setText(userRating + "%");
+        Double userRating = (mMovie.getVoteAverage() * 10);
+        mRatingBar.setProgress(userRating.intValue());
+        mUserRatingTextView.setText(mMovie.getVoteAverage() + "/10");
         mReleaseDateTextView.setText(mMovie.getReleaseDate().substring(0,4));
         mRuntimeTextView.setText("\u23F2 " +
                 getString(R.string.runtime_format,mMovie.getRuntime()/60, mMovie.getRuntime()%60));
