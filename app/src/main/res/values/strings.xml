@@ -29,4 +29,7 @@
         <item>@string/option_sort_by_top_rated</item>
         <item>@string/option_show_favorite</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
