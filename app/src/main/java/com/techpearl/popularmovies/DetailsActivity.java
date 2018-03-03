@@ -45,6 +45,8 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
     @BindView(R.id.trailersRecyclerView) RecyclerView mTrailersRecyclerView;
     @BindView(R.id.reviewsRecyclerView) RecyclerView mReviewsRecyclerView;
     @BindView(R.id.favImageButton) ImageButton mFavoriteButton;
+    @BindView(R.id.trailersTextView) TextView mTrailersNumTextView;
+    @BindView(R.id.reviewsTextView) TextView mReviewsNumTextView;
 
 
     @Override
@@ -86,7 +88,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
     private void populateUI() {
         if(mMovie == null)
             return;
-        setTitle(mMovie.getTitle());
+        getSupportActionBar().hide();
         mTitleTextView.setText(mMovie.getTitle());
         Picasso.with(this).load(mMovie.getFullPosterPath(this)).into(mPosterImageView);
         Picasso.with(this).load(mMovie.getFullBackdropPath(this)).into(mBackdropImageView);
@@ -103,8 +105,11 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         Log.d(TAG, "is Fav: " + mIsFavorite);
         //TODO move off the main thread
         mFavoriteButton.setSelected(mIsFavorite);
+        mFavoriteButton.setVisibility(View.VISIBLE);
         mFavoriteButton.setOnClickListener(this);
         //trailers
+        mTrailersNumTextView.setText(getString(R.string.trailers_num_format,
+                mMovie.getVideos().getResults().size()));
         TrailersAdapter trailersAdapter = new TrailersAdapter(mMovie.getVideos().getResults(), this);
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(
                 getApplicationContext(),
@@ -114,6 +119,8 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         mTrailersRecyclerView.setHasFixedSize(true);
         mTrailersRecyclerView.setAdapter(trailersAdapter);
         //reviews
+        mReviewsNumTextView.setText(getString(R.string.reviews_num_format,
+                mMovie.getReviews().getResults().size()));
         ReviewsAdapter reviewsAdapter = new ReviewsAdapter(mMovie.getReviews().getResults());
         RecyclerView.LayoutManager verticalLayoutManager = new LinearLayoutManager(
                 getApplicationContext(),

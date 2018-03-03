@@ -19,27 +19,26 @@
             android:adjustViewBounds="true"
             android:alpha="0.3"
             android:background="@color/colorPrimaryDark"
+            android:contentDescription="@string/movie_poster_image"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/interstellar_backdrop"
-            android:contentDescription="@string/movie_poster_image" />
+            tools:src="@mipmap/interstellar_backdrop" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="150dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/movie_poster_image"
             app:layout_constraintBottom_toBottomOf="@+id/backdropImageView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/backdropImageView"
-            tools:srcCompat="@mipmap/interstellar"
-            android:layout_marginLeft="8dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.13"
+            tools:srcCompat="@mipmap/interstellar" />
 
         <TextView
             android:id="@+id/titleTextView"
@@ -56,27 +55,25 @@
 
         <ImageButton
             android:id="@+id/favImageButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            tools:background="@drawable/ic_bookmark_add"
             android:background="@drawable/fav_icon_selector"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            android:contentDescription="@string/movie_backdrop_image" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backdropImageView"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
 
         <TextView
             android:id="@+id/runtimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/releaseDateTextView"
-            tools:text="2:30"
-            android:layout_marginLeft="8dp" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/runtimeLabelTextView"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            tools:text="2:30" />
 
 
         <ProgressBar
@@ -84,16 +81,12 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
             android:indeterminate="false"
             android:progressDrawable="@drawable/custom_drawable"
-            app:layout_constraintBottom_toBottomOf="@+id/backdropImageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-            tools:progress="85"
-            android:layout_marginRight="8dp" />
+            app:layout_constraintStart_toEndOf="@+id/dateLabelTextView"
+            app:layout_constraintTop_toBottomOf="@+id/favImageButton"
+            tools:progress="85" />
 
         <TextView
             android:id="@+id/userRatingTextView"
@@ -107,51 +100,40 @@
             app:layout_constraintEnd_toEndOf="@+id/progressBar"
             app:layout_constraintStart_toStartOf="@+id/progressBar"
             app:layout_constraintTop_toTopOf="@+id/progressBar"
-            tools:text="85%" />
+            tools:text="8.5/10" />
 
         <TextView
             android:id="@+id/releaseDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/titleTextView"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-            tools:text="07-09-2014" />
-
-        <TextView
-            android:id="@+id/plotSynopsisLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/plot_synopsis"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/backdropImageView"
-            android:layout_marginLeft="8dp" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/dateLabelTextView"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            tools:text="2014" />
 
         <TextView
             android:id="@+id/plotSynopsisTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+            android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/plotSynopsisLabel"
-            app:layout_constraintTop_toBottomOf="@+id/plotSynopsisLabel" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar"
+            tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus." />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/trailersRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/plotSynopsisTextView"
-            android:orientation="horizontal"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/trailersLabelTextView" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/reviewsRecyclerView"
@@ -161,7 +143,79 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trailersRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@id/reviewsLabelTextView" />
+
+        <TextView
+            android:id="@+id/dateLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/release_date"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backdropImageView" />
+
+        <TextView
+            android:id="@+id/runtimeLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/runtime_label"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateLabelTextView" />
+
+        <TextView
+            android:id="@+id/userRatingLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/user_rating"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            app:layout_constraintBaseline_toBaselineOf="@+id/userRatingTextView"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/trailersLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/trailers_label"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plotSynopsisTextView" />
+
+        <TextView
+            android:id="@+id/trailersTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            tools:text="7 trailers"
+            app:layout_constraintBaseline_toBaselineOf="@+id/trailersLabelTextView"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/reviewsLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reviews_label"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            app:layout_constraintTop_toBottomOf="@+id/trailersRecyclerView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            tools:layout_editor_absoluteX="108dp" />
+        <TextView
+            android:id="@+id/reviewsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            tools:text="3 reviews"
+            app:layout_constraintBaseline_toBaselineOf="@+id/reviewsLabelTextView"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>
