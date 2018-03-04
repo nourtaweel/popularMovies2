@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * A fragment to show user's favorite movies
+ * uses an AsyncTaskManager to load favorite Movies from ContentProvider
  */
 public class FavoriteFragment extends BaseMoviesFragment implements
         LoaderManager.LoaderCallbacks<List<Movie>>{
@@ -23,8 +24,7 @@ public class FavoriteFragment extends BaseMoviesFragment implements
 
     @Override
     void loadMovieList() {
-//        List<Movie> faves = DataUtils.getFavorites(getContext());
-//        showResponse(faves);
+        //load favorite movies from our Content Provider
         getLoaderManager().initLoader(FAVORITES_LOADER_ID, null, this);
     }
 

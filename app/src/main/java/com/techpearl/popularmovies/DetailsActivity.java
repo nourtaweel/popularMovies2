@@ -19,9 +19,10 @@ import com.techpearl.popularmovies.adapters.ReviewsAdapter;
 import com.techpearl.popularmovies.adapters.TrailersAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
-import com.techpearl.popularmovies.data.MoviesContract;
 import com.techpearl.popularmovies.model.Movie;
+import com.techpearl.popularmovies.utils.ApiUtils;
 import com.techpearl.popularmovies.utils.DataUtils;
+import com.techpearl.popularmovies.utils.PreferencesUtils;
 import com.techpearl.popularmovies.utils.YoutubeUtils;
 
 import butterknife.BindView;
@@ -56,8 +57,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         ButterKnife.bind(this);
         Intent startingIntent = getIntent();
         if(!startingIntent.hasExtra(getString(R.string.intent_extra_movie))){
-            Toast.makeText(this, R.string.missing_movie_data, Toast.LENGTH_SHORT).show();
-            finish();
+            finishWithToast(getString(R.string.missing_movie_data));
         }
         int movieId = startingIntent.getIntExtra(getString(R.string.intent_extra_movie), -1);
         fetchMovie(movieId);
@@ -67,6 +67,28 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         if(movieId == -1){
             return;
         }
+        //TODO move off the main thread
+        mIsFavorite = DataUtils.isFavorite(movieId, this);
+        if(ApiUtils.isConnected(this)){
+            //fetch from online
+            fetchFromApi(movieId);
+        }else {
+            //if favorite movie fetch data from ContentProvider, if not display an error message
+            if(mIsFavorite){
+                fetchFromContentProvider(movieId);
+            }else {
+                //error message
+                finishWithToast(getString(R.string.message_not_connected));
+            }
+        }
+    }
+
+    private void fetchFromContentProvider(int movieId) {
+        mMovie = DataUtils.getFavoriteMovie(String.valueOf(movieId), this);
+        populateUI();
+    }
+
+    private void fetchFromApi(int movieId) {
         MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
         Call<Movie> call = moviesDbClient.movieWithTrailersAndReviews(movieId,
                 ServiceGenerator.API_KEY,
@@ -85,10 +107,13 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         });
     }
 
+
     private void populateUI() {
         if(mMovie == null)
             return;
-        getSupportActionBar().hide();
+        if(getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
         mTitleTextView.setText(mMovie.getTitle());
         Picasso.with(this).load(mMovie.getFullPosterPath(this)).into(mPosterImageView);
         Picasso.with(this).load(mMovie.getFullBackdropPath(this)).into(mBackdropImageView);
@@ -101,9 +126,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
                 mMovie.getRuntime()%60));
         mOverviewTextView.setText(mMovie.getOverview());
         //favorite icon
-        mIsFavorite = DataUtils.isFavorite(mMovie.getId(), this);
-        Log.d(TAG, "is Fav: " + mIsFavorite);
-        //TODO move off the main thread
+
         mFavoriteButton.setSelected(mIsFavorite);
         mFavoriteButton.setVisibility(View.VISIBLE);
         mFavoriteButton.setOnClickListener(this);
@@ -139,6 +162,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
 
     @Override
     public void onClick(View view) {
+        //TODO move off ui thread as in APIUtils idea
         if(view.getId()==R.id.favImageButton){
             if(!mIsFavorite){
                 try{
@@ -156,8 +180,15 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
                 }
             }
             mFavoriteButton.setSelected(mIsFavorite);
-
+            Toast.makeText(this,
+                    mIsFavorite? getString(R.string.message_fav_added) : getString(R.string.message_fav_removed),
+                    Toast.LENGTH_SHORT).show();
 
         }
     }
+    private void finishWithToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
 }

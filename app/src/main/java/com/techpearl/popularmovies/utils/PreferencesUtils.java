@@ -25,4 +25,18 @@ public class PreferencesUtils {
         editor.putInt(context.getString(R.string.pref_sort_order), sortOrder);
         editor.apply();
     }
+
+    public static boolean isConnected(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(context.getString(R.string.pref_is_connected), false);
+    }
+
+    public static void setIsConnected(Context context, boolean val){
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(context.getString(R.string.pref_is_connected), val);
+        editor.apply();
+    }
 }
