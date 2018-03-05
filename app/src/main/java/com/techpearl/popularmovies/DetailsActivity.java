@@ -1,7 +1,12 @@
 package com.techpearl.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,14 +30,21 @@ import com.techpearl.popularmovies.utils.DataUtils;
 import com.techpearl.popularmovies.utils.PreferencesUtils;
 import com.techpearl.popularmovies.utils.YoutubeUtils;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailsActivity extends AppCompatActivity implements TrailersAdapter.TrailerClickListener, View.OnClickListener {
+public class DetailsActivity extends AppCompatActivity implements
+        TrailersAdapter.TrailerClickListener,
+        View.OnClickListener,
+        LoaderManager.LoaderCallbacks<Movie>{
     private static final String TAG = DetailsActivity.class.getSimpleName();
+    private static final String MOVIE_ID_BUNDLE_KEY = "movie_id";
+    private static int LOADER_MOVIE_ID = 1;
     private Movie mMovie;
     private boolean mIsFavorite;
     @BindView(R.id.titleTextView) TextView mTitleTextView;
@@ -60,57 +72,17 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
             finishWithToast(getString(R.string.missing_movie_data));
         }
         int movieId = startingIntent.getIntExtra(getString(R.string.intent_extra_movie), -1);
-        fetchMovie(movieId);
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Bundle bundle = new Bundle();
+        bundle.putInt(MOVIE_ID_BUNDLE_KEY, movieId);
+        loaderManager.initLoader(LOADER_MOVIE_ID, bundle, this);
     }
-
-    private void fetchMovie(int movieId) {
-        if(movieId == -1){
-            return;
-        }
-        //TODO move off the main thread
-        mIsFavorite = DataUtils.isFavorite(movieId, this);
-        if(ApiUtils.isConnected(this)){
-            //fetch from online
-            fetchFromApi(movieId);
-        }else {
-            //if favorite movie fetch data from ContentProvider, if not display an error message
-            if(mIsFavorite){
-                fetchFromContentProvider(movieId);
-            }else {
-                //error message
-                finishWithToast(getString(R.string.message_not_connected));
-            }
-        }
-    }
-
-    private void fetchFromContentProvider(int movieId) {
-        mMovie = DataUtils.getFavoriteMovie(String.valueOf(movieId), this);
-        populateUI();
-    }
-
-    private void fetchFromApi(int movieId) {
-        MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
-        Call<Movie> call = moviesDbClient.movieWithTrailersAndReviews(movieId,
-                ServiceGenerator.API_KEY,
-                "videos,reviews");
-        call.enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> response) {
-                mMovie = response.body();
-                populateUI();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
-                Log.e(TAG, getString(R.string.retrofit_error) + t.getMessage());
-            }
-        });
-    }
-
 
     private void populateUI() {
-        if(mMovie == null)
+        if(mMovie == null){
+            finishWithToast(getString(R.string.error_message));
             return;
+        }
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
@@ -126,7 +98,6 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
                 mMovie.getRuntime()%60));
         mOverviewTextView.setText(mMovie.getOverview());
         //favorite icon
-
         mFavoriteButton.setSelected(mIsFavorite);
         mFavoriteButton.setVisibility(View.VISIBLE);
         mFavoriteButton.setOnClickListener(this);
@@ -191,4 +162,82 @@ public class DetailsActivity extends AppCompatActivity implements TrailersAdapte
         finish();
     }
 
+    @NonNull
+    @Override
+    public Loader<Movie> onCreateLoader(int id, @Nullable Bundle args) {
+        if(!(args != null && args.containsKey(MOVIE_ID_BUNDLE_KEY)))
+            return null;
+        int movieId = args.getInt(MOVIE_ID_BUNDLE_KEY);
+        return new MovieLoader(this, movieId);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Movie> loader, Movie data) {
+        mMovie = data;
+        populateUI();
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Movie> loader) {
+
+    }
+    /**
+     * a loader that decides whether to fetch the Movie Object from the api directly (if there is
+     * a connection)
+     * or fetch it from content provider if there was no connection and the movie was one of the user's
+     * favorites
+     */
+    private static class MovieLoader extends AsyncTaskLoader<Movie> {
+        private int mMovieId;
+        private Movie loadedMovie;
+        MovieLoader(@NonNull Context context, int movieId) {
+            super(context);
+            mMovieId = movieId;
+        }
+
+        @Override
+        protected void onStartLoading() {
+            if(loadedMovie != null){
+                deliverResult(loadedMovie);
+            }else {
+                forceLoad();
+            }
+        }
+
+        @Override
+        public void deliverResult(@Nullable Movie data) {
+            super.deliverResult(data);
+            loadedMovie = data;
+        }
+
+        @Nullable
+        @Override
+        public Movie loadInBackground() {
+            if(mMovieId == -1){
+                return null;
+            }
+            boolean isFavorite = DataUtils.isFavorite(mMovieId, getContext());
+            if(ApiUtils.isConnected(getContext())){
+                //fetch from online
+                try{
+                    return fetchFromApi(mMovieId);
+                }catch (IOException ioe){
+                    Log.e(TAG, "error fetching movie");
+                }
+            }else {
+                //if favorite movie fetch data from ContentProvider, if not display an error message
+                if(isFavorite){
+                    return DataUtils.getFavoriteMovie(String.valueOf(mMovieId), getContext());
+                }
+            }
+            return null;
+        }
+        private Movie fetchFromApi(int movieId) throws IOException {
+            MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
+            Call<Movie> call = moviesDbClient.movieWithTrailersAndReviews(movieId,
+                    ServiceGenerator.API_KEY,
+                    "videos,reviews");
+            return call.execute().body();
+        }
+    }
 }

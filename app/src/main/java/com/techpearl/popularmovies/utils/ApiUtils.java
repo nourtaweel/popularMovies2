@@ -29,7 +29,7 @@ import retrofit2.Response;
 public class ApiUtils {
     private final static int SORT_ORDER_POPULAR = 0;
     private final static int SORT_ORDER_TOP_RATED = 1;
-    
+
     public static void initLoadMovies(int sortOrder, Callback<MovieList> callback){
         //TODO: check if connected
         MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
@@ -40,17 +40,17 @@ public class ApiUtils {
             call = moviesDbClient.topRatedMovies(ServiceGenerator.API_KEY);
         }
         call.enqueue(callback);
-    } 
-    
+    }
+
     public static void initLoadMovieTrailers(int movieId, Callback<VideosList> callback){
         //TODO: check if connected
         MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
         Call<VideosList> call = moviesDbClient.movieTrailers(movieId, ServiceGenerator.API_KEY);
         call.enqueue(callback);
-        
+
     }
-    
-    public static void initLoadMovieReviews(int movieId, Callback<ReviewsList> callback){
+
+    public static void initLoadMovie(int movieId, Callback<ReviewsList> callback){
         //TODO: check if connected
         MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
         Call<ReviewsList> call = moviesDbClient.movieReviews(movieId, ServiceGenerator.API_KEY);
