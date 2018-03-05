@@ -47,7 +47,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mAdapter = new MoviesAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
         loadMovieList();

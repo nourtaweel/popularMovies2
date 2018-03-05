@@ -56,7 +56,9 @@ public class DataUtils {
     public static List<Movie> getFavorites(Context context){
         //get all favorite movies. Movies in the returned List only contains id & poster
         Cursor allMovies = context.getContentResolver().query(MoviesContract.MovieEntry.CONTENT_URI,
-                new String [] {MoviesContract.MovieEntry.COLUMN_MOVIE_API_ID, MoviesContract.MovieEntry.COLUMN_POSTER},
+                new String [] {MoviesContract.MovieEntry.COLUMN_MOVIE_API_ID,
+                        MoviesContract.MovieEntry.COLUMN_POSTER,
+                        MoviesContract.MovieEntry.COLUMN_TITLE},
                 null,
                 null,
                 null);
@@ -66,6 +68,7 @@ public class DataUtils {
         for (allMovies.moveToFirst(); !allMovies.isAfterLast(); allMovies.moveToNext()) {
             Movie curr = new Movie();
             curr.setId(allMovies.getInt(allMovies.getColumnIndex(MoviesContract.MovieEntry.COLUMN_MOVIE_API_ID)));
+            curr.setTitle(allMovies.getString(allMovies.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE)));
             curr.setPosterPath(allMovies.getString(allMovies.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER)));
             movies.add(curr);
         }
