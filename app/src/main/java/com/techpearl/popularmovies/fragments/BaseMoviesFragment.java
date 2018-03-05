@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.techpearl.popularmovies.DetailsActivity;
@@ -30,6 +31,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @BindView(R.id.moviesRecyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.errorView) View mErrorView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
+    @BindView(R.id.refreshButton) Button mRefreshButton;
     private MoviesAdapter mAdapter;
     private Unbinder unbinder;
 
@@ -47,6 +49,12 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refresh(view);
+            }
+        });
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mAdapter = new MoviesAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);

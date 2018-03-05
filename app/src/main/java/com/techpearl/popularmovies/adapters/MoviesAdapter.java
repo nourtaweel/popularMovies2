@@ -68,7 +68,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         private void bind(int listIndex){
             titleTextView.setText(mMovies.get(listIndex).getTitle());
             String fullPosterPath = mMovies.get(listIndex).getFullPosterPath(context);
-            Picasso.with(context).load(fullPosterPath).into(posterImageView);
+            Picasso.with(context)
+                    .load(fullPosterPath)
+                    .placeholder(R.color.placehloderColor)
+                    .error(R.color.placehloderColor)
+                    .into(posterImageView);
         }
 
         @Override

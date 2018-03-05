@@ -92,8 +92,14 @@ public class DetailsActivity extends AppCompatActivity implements
             getSupportActionBar().hide();
         }
         mTitleTextView.setText(mMovie.getTitle());
-        Picasso.with(this).load(mMovie.getFullPosterPath(this)).into(mPosterImageView);
-        Picasso.with(this).load(mMovie.getFullBackdropPath(this)).into(mBackdropImageView);
+        Picasso.with(this).load(mMovie.getFullPosterPath(this))
+                .placeholder(R.color.placehloderColor)
+                .error(R.color.placehloderColor)
+                .into(mPosterImageView);
+        Picasso.with(this).load(mMovie.getFullBackdropPath(this))
+                .placeholder(R.color.placehloderColor)
+                .error(R.color.placehloderColor)
+                .into(mBackdropImageView);
         Double userRating = (mMovie.getVoteAverage() * 10);
         mRatingBar.setProgress(userRating.intValue());
         mUserRatingTextView.setText(getString(R.string.rating_of_ten_format, mMovie.getVoteAverage()));

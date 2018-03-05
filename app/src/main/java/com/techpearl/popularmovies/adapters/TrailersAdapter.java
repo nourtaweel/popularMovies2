@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.techpearl.popularmovies.R;
 import com.techpearl.popularmovies.model.Video;
@@ -69,11 +70,21 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
             itemView.setOnClickListener(this);
         }
         private void bind(String trailerKey){
+            mYoutubeIcon.setVisibility(View.INVISIBLE);
             Picasso.with(mContext)
                     .load(YoutubeUtils.constructYoutubeImagePath(trailerKey, mContext))
-                    .placeholder(R.drawable.ic_youtube)
-                    .into(mTrailerImage);
-            mYoutubeIcon.setVisibility(View.VISIBLE);
+                    .error(R.color.placehloderColor)
+                    .placeholder(R.drawable.ic_youtube_faded)
+                    .into(mTrailerImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            mYoutubeIcon.setVisibility(View.VISIBLE);
+                        }
+                        @Override
+                        public void onError() {
+                        }
+                    });
+
         }
 
         @Override

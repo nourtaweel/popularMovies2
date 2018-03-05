@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/trailerImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         tools:src="@mipmap/trailer"
         android:layout_margin="8dp"
         android:padding="8dp"
