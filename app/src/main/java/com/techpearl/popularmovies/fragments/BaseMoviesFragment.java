@@ -1,5 +1,6 @@
 package com.techpearl.popularmovies.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ import butterknife.Unbinder;
 
 /**
  * Created by Nour on 3/2/2018.
+ * a Base Fragment class for the three fragments (TopRatedFragment, PopularFragment, FavoriteFragment)
  */
 
 abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.MovieClickListener {
@@ -37,8 +40,9 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @BindView(R.id.errorTextView) TextView mErrorTextView;
     @BindView(R.id.refreshButton) Button mRefreshButton;
     private MoviesAdapter mAdapter;
+    private GridLayoutManager mLayoutManager;
     private Unbinder unbinder;
-    private Parcelable mSavedRecyclerLayoutState;
+    private int mSavedRecyclerPosition;
     public BaseMoviesFragment() {
     }
 
@@ -69,10 +73,12 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
                 refresh(view);
             }
         });
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), numberOfColumns()));
+        mLayoutManager = new GridLayoutManager(this.getContext(), numberOfColumns());
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MoviesAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
         loadMovieList();
+        Log.d("pos cr", getClass().getCanonicalName()+" "+mSavedRecyclerPosition);
     }
 
     //any fragment must override this method to load List<Movie>
@@ -82,9 +88,8 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         mErrorView.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mAdapter.setMovies(body);
-        if(mSavedRecyclerLayoutState!=null){
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
-        }
+        Log.d("pos sho", getClass().getCanonicalName()+" "+mSavedRecyclerPosition + " ");
+        mRecyclerView.scrollToPosition(mSavedRecyclerPosition);
     }
 
     protected void showErrorMessage(String message) {
@@ -113,15 +118,16 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState != null)
         {
-            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+            mSavedRecyclerPosition = savedInstanceState.getInt(BUNDLE_RECYCLER_LAYOUT);
+            Log.d("pos restore", getClass().getCanonicalName()+" "+mSavedRecyclerPosition);
+            mRecyclerView.scrollToPosition(mSavedRecyclerPosition);
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putInt(BUNDLE_RECYCLER_LAYOUT, mLayoutManager.findFirstVisibleItemPosition());
     }
 
     /* Dynamically determine number of columns for different widths
