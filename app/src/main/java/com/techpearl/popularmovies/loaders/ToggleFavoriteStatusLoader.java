@@ -5,9 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.techpearl.popularmovies.R;
 import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.utils.DataUtils;
 

@@ -31,22 +31,23 @@
             android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="150dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:contentDescription="@string/movie_poster_image"
             app:layout_constraintBottom_toBottomOf="@+id/backdropImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.13"
-            tools:srcCompat="@mipmap/interstellar" />
+            tools:srcCompat="@mipmap/interstellar"
+            android:layout_marginLeft="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -62,14 +63,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backdropImageView"
             android:visibility="invisible"
-            tools:visibility="visible"/>
+            tools:visibility="visible"
+            android:contentDescription="@string/favorite_button" />
 
         <TextView
             android:id="@+id/runtimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
             app:layout_constraintBaseline_toBaselineOf="@+id/runtimeLabelTextView"
             app:layout_constraintEnd_toEndOf="@+id/progressBar"
             app:layout_constraintStart_toStartOf="@+id/progressBar"
@@ -81,21 +83,22 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/margin_small"
             android:indeterminate="false"
             android:progressDrawable="@drawable/custom_drawable"
             app:layout_constraintStart_toEndOf="@+id/dateLabelTextView"
             app:layout_constraintTop_toBottomOf="@+id/favImageButton"
-            tools:progress="85" />
+            tools:progress="85"
+            android:layout_marginLeft="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/userRatingTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:textSize="14sp"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:textSize="@dimen/font_med"
             app:layout_constraintBottom_toBottomOf="@+id/progressBar"
             app:layout_constraintEnd_toEndOf="@+id/progressBar"
             app:layout_constraintStart_toStartOf="@+id/progressBar"
@@ -106,8 +109,8 @@
             android:id="@+id/releaseDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
             app:layout_constraintBaseline_toBaselineOf="@+id/dateLabelTextView"
             app:layout_constraintEnd_toEndOf="@+id/progressBar"
             app:layout_constraintStart_toStartOf="@+id/progressBar"
@@ -117,9 +120,9 @@
             android:id="@+id/plotSynopsisTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +142,7 @@
             android:id="@+id/reviewsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -149,53 +152,58 @@
             android:id="@+id/dateLabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_med"
             android:text="@string/release_date"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/backdropImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/backdropImageView"
+            android:layout_marginLeft="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/runtimeLabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:text="@string/runtime_label"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateLabelTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/dateLabelTextView"
+            android:layout_marginLeft="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/userRatingLabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/margin_small"
             android:text="@string/user_rating"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintBaseline_toBaselineOf="@+id/userRatingTextView"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/trailersLabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:text="@string/trailers_label"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/plotSynopsisTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/plotSynopsisTextView"
+            android:layout_marginLeft="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/trailersTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
             tools:text="7 trailers"
             app:layout_constraintBaseline_toBaselineOf="@+id/trailersLabelTextView"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/reviewsLabelTextView"
@@ -205,17 +213,18 @@
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintTop_toBottomOf="@+id/trailersRecyclerView"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            tools:layout_editor_absoluteX="108dp" />
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_small" />
         <TextView
             android:id="@+id/reviewsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
             tools:text="3 reviews"
             app:layout_constraintBaseline_toBaselineOf="@+id/reviewsLabelTextView"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="@dimen/margin_small" />
 
 
     </android.support.constraint.ConstraintLayout>

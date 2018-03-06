@@ -1,7 +1,5 @@
 package com.techpearl.popularmovies.model;
-/**
- * Created by Nour on 2/25/2018.
- */
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.Expose;

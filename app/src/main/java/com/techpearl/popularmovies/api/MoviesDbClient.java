@@ -3,12 +3,8 @@ package com.techpearl.popularmovies.api;
 
 import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.model.MovieList;
-import com.techpearl.popularmovies.model.Review;
 import com.techpearl.popularmovies.model.ReviewsList;
-import com.techpearl.popularmovies.model.Video;
 import com.techpearl.popularmovies.model.VideosList;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

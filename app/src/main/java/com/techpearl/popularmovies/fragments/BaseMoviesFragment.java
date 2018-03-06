@@ -2,10 +2,13 @@ package com.techpearl.popularmovies.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,24 +31,35 @@ import butterknife.Unbinder;
  */
 
 abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.MovieClickListener {
+    private static final String BUNDLE_RECYCLER_LAYOUT = "recyclerViewState";
     @BindView(R.id.moviesRecyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.errorView) View mErrorView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
     @BindView(R.id.refreshButton) Button mRefreshButton;
     private MoviesAdapter mAdapter;
     private Unbinder unbinder;
-
+    private Parcelable mSavedRecyclerLayoutState;
     public BaseMoviesFragment() {
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_base, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(R.layout.fragment_base, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -55,7 +69,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
                 refresh(view);
             }
         });
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), numberOfColumns()));
         mAdapter = new MoviesAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
         loadMovieList();
@@ -68,6 +82,9 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         mErrorView.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mAdapter.setMovies(body);
+        if(mSavedRecyclerLayoutState!=null){
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
     }
 
     protected void showErrorMessage(String message) {
@@ -88,6 +105,33 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        //unbinder.unbind();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null)
+        {
+            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    /* Dynamically determine number of columns for different widths
+     */
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int widthDividerDp = 200;
+        float widthDividerPx = widthDividerDp * (displayMetrics.densityDpi / 160f);
+        int width = displayMetrics.widthPixels;
+        return Math.round(width / widthDividerPx);
     }
 }

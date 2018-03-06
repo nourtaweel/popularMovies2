@@ -206,13 +206,11 @@ public class DetailsActivity extends AppCompatActivity implements
             @Override
             public void onLoadFinished(@NonNull Loader<Boolean> loader, Boolean data) {
                 mIsFavorite = data;
-                Toast.makeText(DetailsActivity.this, data+"",Toast.LENGTH_SHORT).show();
                 populateFavoriteIcon();
             }
 
             @Override
             public void onLoaderReset(@NonNull Loader<Boolean> loader) {
-
             }
         };
     }

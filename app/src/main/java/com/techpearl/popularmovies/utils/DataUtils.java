@@ -182,7 +182,9 @@ public class DataUtils {
                 null,
                 null);
         Log.d("DataUtils", "count: " + movieCursor.getCount());
-        return (movieCursor != null && movieCursor.getCount() > 0);
+        boolean isFavorite = (movieCursor != null && movieCursor.getCount() > 0);
+        movieCursor.close();
+        return isFavorite;
     }
 
     private static List<ContentProviderOperation> reviewsBulkInsertOperation(List<Review> reviews,

@@ -11,22 +11,23 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         tools:src="@mipmap/trailer"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-         />
+        android:layout_margin="@dimen/margin_small"
+        android:padding="@dimen/margin_small"
+        android:contentDescription="@string/trailer_image" />
 
     <ImageView
         android:id="@+id/youtubeImageView"
         android:layout_width="46dp"
         android:layout_height="46dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
         app:layout_constraintBottom_toBottomOf="@+id/trailerImageView"
         app:layout_constraintEnd_toEndOf="@+id/trailerImageView"
         app:layout_constraintStart_toStartOf="@+id/trailerImageView"
         app:layout_constraintTop_toTopOf="@+id/trailerImageView"
         app:srcCompat="@drawable/ic_youtube"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="@string/youtube_logo" />
 </android.support.constraint.ConstraintLayout>

@@ -1,10 +1,11 @@
 package com.techpearl.popularmovies;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.techpearl.popularmovies.utils.PreferencesUtils;
 
 public class MainActivity extends AppCompatActivity{
     private static String TAG = MainActivity.class.getSimpleName();
+    private static final String FRAGMENT_RETAINED_TAG = "RetainedFragment";
+    private Fragment mFragmentToShow;
     private int mSortOrder;
 
     @Override
@@ -26,25 +29,35 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSortOrder = PreferencesUtils.getPreferredSortOrder(this);
+        FragmentManager fm = getSupportFragmentManager();
+        mFragmentToShow = fm.findFragmentByTag(FRAGMENT_RETAINED_TAG);
+        if (mFragmentToShow == null) {
+            showNewFragment();
+            Log.d(TAG, "new fragment");
+        }else {
+            Log.d(TAG, "retained fragment");
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.resultsFrameLayout, mFragmentToShow, FRAGMENT_RETAINED_TAG);
+            transaction.commit();
+        }
     }
 
-    private void showFragment() {
-        Fragment fragmentToShow;
-        switch (mSortOrder){
-            case 0:
-                fragmentToShow = new PopularFragment();
-                break;
-            case 1:
-                fragmentToShow = new TopRatedFragment();
-                break;
-            case 2:
-                fragmentToShow = new FavoriteFragment();
-                break;
-            default:
-                throw new UnsupportedOperationException("There is no fragment for option " + mSortOrder);
-        }
+    private void showNewFragment() {
+            switch (mSortOrder){
+                case 0:
+                    mFragmentToShow = new PopularFragment();
+                    break;
+                case 1:
+                    mFragmentToShow = new TopRatedFragment();
+                    break;
+                case 2:
+                    mFragmentToShow = new FavoriteFragment();
+                    break;
+                default:
+                    throw new UnsupportedOperationException("There is no fragment for option " + mSortOrder);
+            }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.resultsFrameLayout, fragmentToShow);
+        transaction.replace(R.id.resultsFrameLayout, mFragmentToShow, FRAGMENT_RETAINED_TAG);
         transaction.commit();
     }
 
@@ -70,36 +83,30 @@ public class MainActivity extends AppCompatActivity{
         sortBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //String[] sortOptions = getResources().getStringArray(R.array.order_by);
                 mSortOrder = i;
                 PreferencesUtils.setPreferredSortOrder(MainActivity.this, i);
-                showFragment();
-                /*String selectedOption = sortOptions[i];
-                if(selectedOption.equals(getString(R.string.option_sort_by_popular))){
-                    PreferencesUtils.setPreferredSortOrder(MainActivity.this, SORT_ORDER_POPULAR);
-                }else if(selectedOption.equals(getString(R.string.option_sort_by_top_rated))){
-                    PreferencesUtils.setPreferredSortOrder(MainActivity.this, SORT_ORDER_TOP_RATED);
-                }else if(selectedOption.equals(getString(R.string.option_show_favorite))){
-                    PreferencesUtils.setPreferredSortOrder(MainActivity.this, SHOW_FAVORITE);
-                }*/
-
+                showNewFragment();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 mSortOrder = getResources().getInteger(R.integer.pref_sort_order_default);
-                showFragment();
+                showNewFragment();
             }
         });
-
     }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         return super.onOptionsItemSelected(item);
     }
 
-
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isFinishing()) {
+            FragmentManager fm = getSupportFragmentManager();
+            // we will not need this fragment anymore, this may also be a good place to signal
+            // to the retained fragment object to perform its own cleanup.
+            fm.beginTransaction().remove(mFragmentToShow).commit();
+        }
+    }
 }

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">PopularMovies</string>
-    <string name="action_settings">settings</string>
     <string name="sort_by">sort by</string>
     <string name="option_sort_by_popular">Sort By Popular</string>
     <string name="option_sort_by_top_rated">Sort By Top Rated</string>
@@ -34,6 +33,12 @@
     <string name="message_fav_added">Added to favorites</string>
     <string name="message_fav_removed">Removed from favorites</string>
     <string name="message_not_connected">Sorry, There is no internet connection!</string>
+    <string name="favorite_button">favorite button</string>
+    <string name="saved_recycler_position">recycler_position</string>
+    <string name="saved_recycler_state">recycler_state</string>
+    <string name="user_icon">user icon</string>
+    <string name="trailer_image">trailer image</string>
+    <string name="youtube_logo">youtube logo</string>
     <string-array name="order_by">
         <item>@string/option_sort_by_popular</item>
         <item>@string/option_sort_by_top_rated</item>

@@ -2,13 +2,8 @@ package com.techpearl.popularmovies.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonWriter;
 import com.techpearl.popularmovies.BuildConfig;
 import com.techpearl.popularmovies.model.Movie;
-
-import java.io.IOException;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

@@ -57,7 +57,7 @@ public class MoviesContentProvider extends ContentProvider {
                         @Nullable String order) {
         int match = sUriMatcher.match(uri);
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-        Cursor retCursor = null;
+        Cursor retCursor;
         int id = -1;
         switch (match){
             case MOVIES:
@@ -114,7 +114,7 @@ public class MoviesContentProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
-        Uri returnUri = null;
+        Uri returnUri;
         long id;
         switch (match){
             case MOVIES:

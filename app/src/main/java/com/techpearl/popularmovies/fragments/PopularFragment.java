@@ -1,29 +1,14 @@
 package com.techpearl.popularmovies.fragments;
 
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.techpearl.popularmovies.DetailsActivity;
 import com.techpearl.popularmovies.R;
-import com.techpearl.popularmovies.adapters.MoviesAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
-import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.model.MovieList;
 import com.techpearl.popularmovies.utils.ApiUtils;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

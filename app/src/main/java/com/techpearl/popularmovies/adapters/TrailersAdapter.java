@@ -41,8 +41,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View viewItem = inflater.inflate(R.layout.trailer_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(viewItem);
-        return viewHolder;
+        return new ViewHolder(viewItem);
     }
 
     @Override
@@ -95,7 +94,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
     }
 
     public interface TrailerClickListener{
-        public void onTrailerClicked(String trailerKey);
+        void onTrailerClicked(String trailerKey);
     }
 
 

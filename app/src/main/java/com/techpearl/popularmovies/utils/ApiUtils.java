@@ -3,24 +3,15 @@ package com.techpearl.popularmovies.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.techpearl.popularmovies.R;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
-import com.techpearl.popularmovies.model.Movie;
 import com.techpearl.popularmovies.model.MovieList;
-import com.techpearl.popularmovies.model.Review;
 import com.techpearl.popularmovies.model.ReviewsList;
-import com.techpearl.popularmovies.model.Video;
 import com.techpearl.popularmovies.model.VideosList;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Nour on 2/26/2018.
