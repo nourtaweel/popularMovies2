@@ -8,9 +8,11 @@ import com.techpearl.popularmovies.R;
 
 /**
  * Created by Nour on 2/21/2018.
+ * Contains static methods to handle preferences
  */
 
 public class PreferencesUtils {
+    //getting last selected sort order
     public static int getPreferredSortOrder(Context context){
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -18,6 +20,7 @@ public class PreferencesUtils {
                 context.getString(R.string.pref_sort_order),
                 context.getResources().getInteger(R.integer.pref_sort_order_default));
     }
+    //saving last selected sort order
     public static void setPreferredSortOrder(Context context, int sortOrder){
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);

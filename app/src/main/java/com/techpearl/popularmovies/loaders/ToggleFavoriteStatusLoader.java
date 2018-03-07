@@ -11,6 +11,10 @@ import com.techpearl.popularmovies.utils.DataUtils;
 
 /**
  * Created by Nour on 3/5/2018.
+ * An AsyncTaskLoader that connects with ContentProvider to toggle state of movie from favorite to not
+ * and vice versa
+ * if movie is currently saved in ContentProvider -> delete it
+ * if movie is curruntlynot saved in the ContentProvider -> save it
  */
 
 public class ToggleFavoriteStatusLoader extends AsyncTaskLoader<Boolean> {

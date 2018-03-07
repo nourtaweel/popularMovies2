@@ -86,7 +86,7 @@ public class ReviewsList implements Parcelable {
 
     @Override
     public String toString() {
-        return new StringBuilder().append("page" + page).append("results" + results).append("totalPages").append(totalPages).append("totalResults"+totalResults).toString();
+        return ("page" + page) + "results" + results + "totalPages" + totalPages + "totalResults" + totalResults;
     }
 
     public void writeToParcel(Parcel dest, int flags) {

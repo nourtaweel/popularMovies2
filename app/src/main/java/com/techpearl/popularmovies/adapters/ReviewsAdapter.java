@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 2/27/2018.
+ * RecyclerView Adapter to view Reviews used in DetailsActivity
  */
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder>{

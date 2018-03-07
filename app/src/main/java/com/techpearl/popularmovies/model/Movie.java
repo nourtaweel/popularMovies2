@@ -11,6 +11,7 @@ import com.techpearl.popularmovies.R;
 
 /**
  * Created by Nour on 2/19/2018.
+ * the Movie pojo
  */
 
 public class Movie implements Parcelable {

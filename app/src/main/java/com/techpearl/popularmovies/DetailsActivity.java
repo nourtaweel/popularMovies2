@@ -109,8 +109,10 @@ public class DetailsActivity extends AppCompatActivity implements
                 mMovie.getRuntime()%60));
         mOverviewTextView.setText(mMovie.getOverview());
         //trailers recyclerView
-        mTrailersNumTextView.setText(getString(R.string.trailers_num_format,
-                mMovie.getVideos().getResults().size()));
+        int trailersNum = mMovie.getVideos().getResults().size();
+        mTrailersNumTextView.setText(getResources().getQuantityString(R.plurals.trailers_num_format,
+                trailersNum,
+                trailersNum));
         TrailersAdapter trailersAdapter = new TrailersAdapter(mMovie.getVideos().getResults(), this);
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(
                 getApplicationContext(),
@@ -120,8 +122,10 @@ public class DetailsActivity extends AppCompatActivity implements
         mTrailersRecyclerView.setHasFixedSize(true);
         mTrailersRecyclerView.setAdapter(trailersAdapter);
         //reviews recyclerView
-        mReviewsNumTextView.setText(getString(R.string.reviews_num_format,
-                mMovie.getReviews().getResults().size()));
+        int reviewsNum = mMovie.getReviews().getResults().size();
+        mReviewsNumTextView.setText(getResources().getQuantityString(R.plurals.reviews_num_format,
+                reviewsNum,
+                reviewsNum));
         ReviewsAdapter reviewsAdapter = new ReviewsAdapter(mMovie.getReviews().getResults());
         RecyclerView.LayoutManager verticalLayoutManager = new LinearLayoutManager(
                 getApplicationContext(),

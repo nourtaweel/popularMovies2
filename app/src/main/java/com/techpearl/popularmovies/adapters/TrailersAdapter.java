@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 2/27/2018.
+ * RecyclerView Adapter to view Trailers used in DetailsActivity
  */
 
 public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHolder> {

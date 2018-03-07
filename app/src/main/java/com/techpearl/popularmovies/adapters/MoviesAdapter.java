@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 2/20/2018.
+ * RecyclerView Adapter used to view one Movie in MainActivity
  */
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
