@@ -181,9 +181,10 @@ public class DataUtils {
                 null,
                 null,
                 null);
-        Log.d("DataUtils", "count: " + movieCursor.getCount());
         boolean isFavorite = (movieCursor != null && movieCursor.getCount() > 0);
-        movieCursor.close();
+        if(movieCursor != null){
+            movieCursor.close();
+        }
         return isFavorite;
     }
 

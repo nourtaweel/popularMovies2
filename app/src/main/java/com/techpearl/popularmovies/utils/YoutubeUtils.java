@@ -9,6 +9,7 @@ import com.techpearl.popularmovies.R;
 
 /**
  * Created by Nour on 2/27/2018.
+ * methods to construct Youtube paths
  */
 
 public class YoutubeUtils {

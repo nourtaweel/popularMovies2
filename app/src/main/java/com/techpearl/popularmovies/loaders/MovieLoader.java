@@ -9,7 +9,7 @@ import android.util.Log;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.Movie;
-import com.techpearl.popularmovies.utils.ApiUtils;
+import com.techpearl.popularmovies.utils.NetworkUtils;
 import com.techpearl.popularmovies.utils.DataUtils;
 
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class MovieLoader extends AsyncTaskLoader<Movie> {
             return null;
         }
         boolean isFavorite = DataUtils.isFavorite(mMovieId, getContext());
-        if(ApiUtils.isConnected(getContext())){
+        if(NetworkUtils.isConnected(getContext())){
             //fetch from online
             try{
                 return fetchFromApi(mMovieId);

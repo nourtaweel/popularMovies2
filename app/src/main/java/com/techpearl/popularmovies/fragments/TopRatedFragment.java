@@ -12,7 +12,7 @@ import com.techpearl.popularmovies.adapters.MoviesAdapter;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.MovieList;
-import com.techpearl.popularmovies.utils.ApiUtils;
+import com.techpearl.popularmovies.utils.NetworkUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +35,7 @@ public class TopRatedFragment extends BaseMoviesFragment {
 
     @Override
     void loadMovieList() {
-        if(!ApiUtils.isConnected(getContext())){
+        if(!NetworkUtils.isConnected(getContext())){
             showErrorMessage(getString(R.string.error_message_no_network));
             return;
         }

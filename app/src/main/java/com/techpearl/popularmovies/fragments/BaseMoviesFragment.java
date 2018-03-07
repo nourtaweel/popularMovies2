@@ -1,9 +1,7 @@
 package com.techpearl.popularmovies.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,7 +24,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by Nour on 3/2/2018.
@@ -41,7 +38,6 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @BindView(R.id.refreshButton) Button mRefreshButton;
     private MoviesAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
-    private Unbinder unbinder;
     private int mSavedRecyclerPosition;
     public BaseMoviesFragment() {
     }
@@ -53,7 +49,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_base, container, false);
     }
@@ -61,7 +57,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
     }
 
     @Override
@@ -70,7 +66,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         mRefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                refresh(view);
+                refresh();
             }
         });
         mLayoutManager = new GridLayoutManager(this.getContext(), numberOfColumns());
@@ -78,17 +74,18 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         mAdapter = new MoviesAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
         loadMovieList();
-        Log.d("pos cr", getClass().getCanonicalName()+" "+mSavedRecyclerPosition);
     }
 
     //any fragment must override this method to load List<Movie>
     abstract void loadMovieList();
 
     protected void showResponse(List<Movie> body) {
+        if (body == null){
+            return;
+        }
         mErrorView.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mAdapter.setMovies(body);
-        Log.d("pos sho", getClass().getCanonicalName()+" "+mSavedRecyclerPosition + " ");
         mRecyclerView.scrollToPosition(mSavedRecyclerPosition);
     }
 
@@ -97,7 +94,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         mErrorView.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
-    public void refresh(View view) {
+    public void refresh() {
         loadMovieList();
     }
     @Override
@@ -119,7 +116,6 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         if(savedInstanceState != null)
         {
             mSavedRecyclerPosition = savedInstanceState.getInt(BUNDLE_RECYCLER_LAYOUT);
-            Log.d("pos restore", getClass().getCanonicalName()+" "+mSavedRecyclerPosition);
             mRecyclerView.scrollToPosition(mSavedRecyclerPosition);
         }
     }
@@ -133,6 +129,9 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     /* Dynamically determine number of columns for different widths
      */
     private int numberOfColumns() {
+        if(getActivity() == null){
+            return 0;
+        }
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int widthDividerDp = 200;

@@ -8,7 +8,7 @@ import com.techpearl.popularmovies.R;
 import com.techpearl.popularmovies.api.MoviesDbClient;
 import com.techpearl.popularmovies.api.ServiceGenerator;
 import com.techpearl.popularmovies.model.MovieList;
-import com.techpearl.popularmovies.utils.ApiUtils;
+import com.techpearl.popularmovies.utils.NetworkUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +25,7 @@ public class PopularFragment extends BaseMoviesFragment {
 
     @Override
     void loadMovieList() {
-        if(!ApiUtils.isConnected(getContext())){
+        if(!NetworkUtils.isConnected(getContext())){
             showErrorMessage(getString(R.string.error_message_no_network));
             return;
         }
@@ -34,7 +34,6 @@ public class PopularFragment extends BaseMoviesFragment {
         call.enqueue(new Callback<MovieList>() {
             @Override
             public void onResponse(@NonNull Call<MovieList> call, @NonNull Response<MovieList> response) {
-                Log.d(TAG, response.body().toString());
                 showResponse(response.body().getResults());
             }
 
