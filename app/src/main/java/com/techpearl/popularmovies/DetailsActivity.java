@@ -2,6 +2,7 @@ package com.techpearl.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -9,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,6 +32,8 @@ import butterknife.ButterKnife;
 public class DetailsActivity extends AppCompatActivity implements
         TrailersAdapter.TrailerClickListener,
         View.OnClickListener{
+    private static final String RETAINED_MOVIE = "retained_movie";
+    private static final String RETAINED_FAV = "retained_fav";
     private Movie mMovie;
     private boolean mIsFavorite;
 
@@ -70,10 +74,12 @@ public class DetailsActivity extends AppCompatActivity implements
             finishWithToast(getString(R.string.missing_movie_data));
         }
         int movieId = startingIntent.getIntExtra(getString(R.string.intent_extra_movie), -1);
+        toggleFavCallback = buildToggleFavCallback();
+        if(savedInstanceState != null)
+            return;
         //construct callbacks for (movie loader + favorite status loader)
         LoaderManager.LoaderCallbacks<Movie> movieLoaderCallback = buildMovieLoaderCallback();
         LoaderManager.LoaderCallbacks<Boolean> favoriteStatusLoaderCallback = buildFavoriteLoaderCallback();
-        toggleFavCallback = buildToggleFavCallback();
         //init loaders to display movie data
         LoaderManager loaderManager = getSupportLoaderManager();
         Bundle bundle = new Bundle();
@@ -244,4 +250,19 @@ public class DetailsActivity extends AppCompatActivity implements
         };
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(RETAINED_MOVIE, mMovie);
+        outState.putBoolean(RETAINED_FAV, mIsFavorite);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mMovie = savedInstanceState.getParcelable(RETAINED_MOVIE);
+        mIsFavorite = savedInstanceState.getBoolean(RETAINED_FAV);
+        populateUI();
+        populateFavoriteIcon();
+    }
 }

@@ -36,6 +36,8 @@
     <string name="user_icon">user icon</string>
     <string name="trailer_image">trailer image</string>
     <string name="youtube_logo">youtube logo</string>
+    <string name="RETAINED_MVOIE">retained_movie_object</string>
+    <string name="RETAINED_FAV">retained_is_fav</string>
     <string-array name="order_by">
         <item>@string/option_sort_by_popular</item>
         <item>@string/option_sort_by_top_rated</item>
