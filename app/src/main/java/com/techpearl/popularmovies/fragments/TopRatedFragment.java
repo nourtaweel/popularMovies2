@@ -36,7 +36,7 @@ public class TopRatedFragment extends BaseMoviesFragment {
     @Override
     void loadMovieList() {
         if(!NetworkUtils.isConnected(getContext())){
-            showErrorMessage(getString(R.string.error_message_no_network));
+            showErrorMessage(getString(R.string.error_message_no_network), true);
             return;
         }
         MoviesDbClient moviesDbClient = ServiceGenerator.createService(MoviesDbClient.class);
@@ -50,7 +50,7 @@ public class TopRatedFragment extends BaseMoviesFragment {
             @Override
             public void onFailure(@NonNull Call<MovieList> call, @NonNull Throwable t) {
                 Log.e(TAG, getString(R.string.retrofit_error) + t.getMessage());
-                showErrorMessage(getString(R.string.error_message));
+                showErrorMessage(getString(R.string.error_message), false);
             }
         });
     }

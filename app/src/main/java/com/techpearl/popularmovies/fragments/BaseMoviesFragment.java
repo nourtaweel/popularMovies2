@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techpearl.popularmovies.DetailsActivity;
@@ -35,6 +36,7 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
     @BindView(R.id.errorView) View mErrorView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
     @BindView(R.id.refreshButton) Button mRefreshButton;
+    @BindView(R.id.no_internet_image) ImageView mNoConnectionImageView;
     private MoviesAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
     private int mSavedRecyclerPosition;
@@ -88,9 +90,12 @@ abstract class BaseMoviesFragment extends Fragment implements MoviesAdapter.Movi
         mRecyclerView.scrollToPosition(mSavedRecyclerPosition);
     }
 
-    protected void showErrorMessage(String message) {
+    protected void showErrorMessage(String message,boolean noConnection) {
         mErrorTextView.setText(message);
         mErrorView.setVisibility(View.VISIBLE);
+        if(noConnection){
+            mNoConnectionImageView.setVisibility(View.VISIBLE);
+        }
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
     public void refresh() {
